@@ -1,6 +1,11 @@
 const db = require('./db')
 
-// register models
-const {User, Order, Book} = require('./models')
+const {User, Order, Book, OrderBook} = require('./models')
+User.hasMany(Order)
+Order.belongsTo(User)
+
+//Order and Book : many to many
+Book.belongsToMany(Order, {through: OrderBook})
+Order.belongsToMany(Book, {through: OrderBook})
 
 module.exports = db
