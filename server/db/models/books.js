@@ -12,7 +12,7 @@ const Book = db.define('book', {
   imageUrl: {
     type: Sequelize.STRING,
     defaultValue:
-      'https://i.pinimg.com/originals/b8/bd/3f/b8bd3f935d3c7270a454da6903096706.jpg'
+      'https://openbookphilly.com/wp-content/uploads/2016/11/bookstack.png'
   },
   description: {
     type: Sequelize.TEXT,
