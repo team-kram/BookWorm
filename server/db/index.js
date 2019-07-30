@@ -1,6 +1,11 @@
 const db = require('./db')
 
 // register models
-require('./models')
+const { User, Order, Book } = require('./models')
 
-module.exports = db
+module.exports = {
+  db,
+  User,
+  Order,
+  Book
+}
