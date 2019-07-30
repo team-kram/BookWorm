@@ -28,10 +28,16 @@ const Book = db.define('book', {
     type: Sequelize.STRING
   },
   stock: {
-    type: Sequelize.INTEGER
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   },
   price: {
-    type: Sequelize.INTEGER
+    type: Sequelize.DOUBLE,
+    allowNull: false
+  },
+  isbn: {
+    type: Sequelize.STRING,
+    allowNull: false
   }
 })
 
