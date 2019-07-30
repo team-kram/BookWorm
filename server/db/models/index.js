@@ -22,9 +22,8 @@ User.hasMany(Order)
 Order.belongsTo(User)
 
 //Order and Book : many to many
-Book.belongsToMany(Order, {through : 'order-book'})
-Order.belongsToMany(Book, {through : 'order-book'})
-
+Book.belongsToMany(Order, {through: 'order-book'})
+Order.belongsToMany(Book, {through: 'order-book'})
 
 module.exports = {
   User,
