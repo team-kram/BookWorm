@@ -8,7 +8,7 @@ const UPDATE_ORDER = 'UPDATE ORDER'
 const defaultOrder = {}
 
 const gotOrders = order => ({
-  type: GET_ORDER,
+  type: GOT_ORDER,
   order
 })
 const removeOrder = order => ({
@@ -27,7 +27,7 @@ export const getOrders = () => async dispatch => {
       accumulator[current.orderNumber] = current
       return accumulator
     }, {})
-    dipatch(gotOrders(orders))
+    dispatch(gotOrders(orders))
   } catch (err) {
     console.error(err)
   }
