@@ -443,7 +443,7 @@ async function seed() {
       userId: 16
     },
     {
-      completed: false,
+      completed: true,
       userId: 2
     },
     {
@@ -496,103 +496,103 @@ async function seed() {
     }
   ]
 
-  const allOrderBooks = [
-    {
-      quantity: 19,
-      bookId: 26,
-      orderId: 13
-    },
-    {
-      quantity: 13,
-      bookId: 6,
-      orderId: 2
-    },
-    {
-      quantity: 15,
-      bookId: 23,
-      orderId: 11
-    },
-    {
-      quantity: 2,
-      bookId: 29,
-      orderId: 8
-    },
-    {
-      quantity: 14,
-      bookId: 12,
-      orderId: 1
-    },
-    {
-      quantity: 12,
-      bookId: 13,
-      orderId: 12
-    },
-    {
-      quantity: 17,
-      bookId: 8,
-      orderId: 12
-    },
-    {
-      quantity: 4,
-      bookId: 1,
-      orderId: 5
-    },
-    {
-      quantity: 19,
-      bookId: 4,
-      orderId: 18
-    },
-    {
-      quantity: 19,
-      bookId: 14,
-      orderId: 14
-    },
-    {
-      quantity: 2,
-      bookId: 6,
-      orderId: 4
-    },
-    {
-      quantity: 18,
-      bookId: 21,
-      orderId: 2
-    },
-    {
-      quantity: 17,
-      bookId: 30,
-      orderId: 12
-    },
-    {
-      quantity: 18,
-      bookId: 27,
-      orderId: 11
-    },
-    {
-      quantity: 10,
-      bookId: 11,
-      orderId: 6
-    },
-    {
-      quantity: 15,
-      bookId: 21,
-      orderId: 12
-    },
-    {
-      quantity: 9,
-      bookId: 15,
-      orderId: 6
-    },
-    {
-      quantity: 1,
-      bookId: 24,
-      orderId: 1
-    },
-    {
-      quantity: 7,
-      bookId: 17,
-      orderId: 10
-    }
-  ]
+  // const allOrderBooks = [
+  //   {
+  //     quantity: 19,
+  //     bookId: 26,
+  //     orderId: 13
+  //   },
+  //   {
+  //     quantity: 13,
+  //     bookId: 6,
+  //     orderId: 2
+  //   },
+  //   {
+  //     quantity: 15,
+  //     bookId: 23,
+  //     orderId: 11
+  //   },
+  //   {
+  //     quantity: 2,
+  //     bookId: 29,
+  //     orderId: 8
+  //   },
+  //   {
+  //     quantity: 14,
+  //     bookId: 12,
+  //     orderId: 1
+  //   },
+  //   {
+  //     quantity: 12,
+  //     bookId: 13,
+  //     orderId: 12
+  //   },
+  //   {
+  //     quantity: 17,
+  //     bookId: 8,
+  //     orderId: 12
+  //   },
+  //   {
+  //     quantity: 4,
+  //     bookId: 1,
+  //     orderId: 5
+  //   },
+  //   {
+  //     quantity: 19,
+  //     bookId: 4,
+  //     orderId: 18
+  //   },
+  //   {
+  //     quantity: 19,
+  //     bookId: 14,
+  //     orderId: 14
+  //   },
+  //   {
+  //     quantity: 2,
+  //     bookId: 6,
+  //     orderId: 4
+  //   },
+  //   {
+  //     quantity: 18,
+  //     bookId: 21,
+  //     orderId: 2
+  //   },
+  //   {
+  //     quantity: 17,
+  //     bookId: 30,
+  //     orderId: 12
+  //   },
+  //   {
+  //     quantity: 18,
+  //     bookId: 27,
+  //     orderId: 11
+  //   },
+  //   {
+  //     quantity: 10,
+  //     bookId: 11,
+  //     orderId: 6
+  //   },
+  //   {
+  //     quantity: 15,
+  //     bookId: 21,
+  //     orderId: 12
+  //   },
+  //   {
+  //     quantity: 9,
+  //     bookId: 15,
+  //     orderId: 6
+  //   },
+  //   {
+  //     quantity: 1,
+  //     bookId: 24,
+  //     orderId: 1
+  //   },
+  //   {
+  //     quantity: 7,
+  //     bookId: 17,
+  //     orderId: 10
+  //   }
+  // ]
 
   const books = await Promise.all(
     allBooks.map(book => {
@@ -618,12 +618,12 @@ async function seed() {
   console.log(`seeded ${orders.length} order data`)
   console.log(`order data seeded successfully`)
 
-  const orderBooks = await Promise.all(
-    allOrderBooks.map(order => {
-      return OrderBook.create(order)
-    })
-  )
-  console.log(`seeded ${orderBooks.length} order data`)
+  // const orderBooks = await Promise.all(
+  //   allOrderBooks.map(order => {
+  //     return OrderBook.create(order)
+  //   })
+  // )
+  // console.log(`seeded ${orderBooks.length} order data`)
   console.log(`order data seeded successfully`)
 }
 
