@@ -22,6 +22,7 @@ export const getOrders = () => async dispatch => {
       accumulator[current.orderNumber] = current
       return accumulator
     }, {})
+    dipatch(gotOrders(orders))
   } catch (err) {
     console.error(err)
   }
