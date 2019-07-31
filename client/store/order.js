@@ -10,8 +10,9 @@ const gotOrder = order => ({
   type: GET_ORDER,
   order
 })
-const removeOrder = () => ({
-  type: REMOVE_ORDER
+const removeOrder = id => ({
+  type: REMOVE_ORDER,
+  id
 })
 
 export const getOrder = () => async dispatch => {
@@ -23,7 +24,15 @@ export const getOrder = () => async dispatch => {
   }
 }
 
-export default (ordersReducer = (orders = defaultOrder, action) => {
+export const getDeleteOrder = id => {
+  return async dispatch => {
+    await Axios.delete(`/api/orders/${id}`)
+    const {data} = await Axios.get('/api/orders')
+    dispatch(removeOrder(data))
+  }
+}
+
+export default (orders = defaultOrder, action) => {
   switch (action.type) {
     case GOT_ORDER:
       return action.order
@@ -31,4 +40,4 @@ export default (ordersReducer = (orders = defaultOrder, action) => {
     default:
       return orders
   }
-})
+}
