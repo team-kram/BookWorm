@@ -1,13 +1,13 @@
 'use strict'
 
 const db = require('../server/db')
-const {User, Book} = require('../server/db/models')
+const {User, Book, Order, OrderBook} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const books = [
+  const allBooks = [
     {
       title: 'Last Days in the Desert',
       isbn: '254862926-0',
@@ -310,7 +310,7 @@ async function seed() {
     }
   ]
 
-  const users = [
+  const allUsers = [
     {
       name: 'Douglass Sillars',
       email: 'dsillars0@sfgate.com',
@@ -413,23 +413,218 @@ async function seed() {
     }
   ]
 
-  const book = await Promise.all(
-    books.map(book => {
+  const allOrders = [
+    {
+      completed: true,
+      userId: 8
+    },
+    {
+      completed: false,
+      userId: 11
+    },
+    {
+      completed: true,
+      userId: 7
+    },
+    {
+      completed: true,
+      userId: 19
+    },
+    {
+      completed: false,
+      userId: 2
+    },
+    {
+      completed: false,
+      userId: 17
+    },
+    {
+      completed: true,
+      userId: 16
+    },
+    {
+      completed: false,
+      userId: 2
+    },
+    {
+      completed: true,
+      userId: 12
+    },
+    {
+      completed: true,
+      userId: 13
+    },
+    {
+      completed: true,
+      userId: 10
+    },
+    {
+      completed: false,
+      userId: 6
+    },
+    {
+      completed: false,
+      userId: 4
+    },
+    {
+      completed: true,
+      userId: 12
+    },
+    {
+      completed: true,
+      userId: 11
+    },
+    {
+      completed: true,
+      userId: 20
+    },
+    {
+      completed: true,
+      userId: 19
+    },
+    {
+      completed: false,
+      userId: 15
+    },
+    {
+      completed: true,
+      userId: 20
+    },
+    {
+      completed: false,
+      userId: 14
+    }
+  ]
+
+  const allOrderBooks = [
+    {
+      quantity: 19,
+      bookId: 26,
+      orderId: 13
+    },
+    {
+      quantity: 13,
+      bookId: 6,
+      orderId: 2
+    },
+    {
+      quantity: 15,
+      bookId: 23,
+      orderId: 11
+    },
+    {
+      quantity: 2,
+      bookId: 29,
+      orderId: 8
+    },
+    {
+      quantity: 14,
+      bookId: 12,
+      orderId: 1
+    },
+    {
+      quantity: 12,
+      bookId: 13,
+      orderId: 12
+    },
+    {
+      quantity: 17,
+      bookId: 8,
+      orderId: 12
+    },
+    {
+      quantity: 4,
+      bookId: 1,
+      orderId: 5
+    },
+    {
+      quantity: 19,
+      bookId: 4,
+      orderId: 18
+    },
+    {
+      quantity: 19,
+      bookId: 14,
+      orderId: 14
+    },
+    {
+      quantity: 2,
+      bookId: 6,
+      orderId: 4
+    },
+    {
+      quantity: 18,
+      bookId: 21,
+      orderId: 2
+    },
+    {
+      quantity: 17,
+      bookId: 30,
+      orderId: 12
+    },
+    {
+      quantity: 18,
+      bookId: 27,
+      orderId: 11
+    },
+    {
+      quantity: 10,
+      bookId: 11,
+      orderId: 6
+    },
+    {
+      quantity: 15,
+      bookId: 21,
+      orderId: 12
+    },
+    {
+      quantity: 9,
+      bookId: 15,
+      orderId: 6
+    },
+    {
+      quantity: 1,
+      bookId: 24,
+      orderId: 1
+    },
+    {
+      quantity: 7,
+      bookId: 17,
+      orderId: 10
+    }
+  ]
+
+  const books = await Promise.all(
+    allBooks.map(book => {
       return Book.create(book)
     })
   )
+  console.log(`seeded ${books.length} book data`)
+  console.log(`book data seeded successfully`)
 
-  const user = await Promise.all(
-    users.map(user => {
+  const users = await Promise.all(
+    allUsers.map(user => {
       return User.create(user)
     })
   )
-
-  console.log(`seeded ${user.length} user data`)
+  console.log(`seeded ${users.length} user data`)
   console.log(`user data seeded successfully`)
 
-  console.log(`seeded ${book.length} book data`)
-  console.log(`book data seeded successfully`)
+  const orders = await Promise.all(
+    allOrders.map(order => {
+      return Order.create(order)
+    })
+  )
+  console.log(`seeded ${orders.length} order data`)
+  console.log(`order data seeded successfully`)
+
+  const orderBooks = await Promise.all(
+    allOrderBooks.map(order => {
+      return OrderBook.create(order)
+    })
+  )
+  console.log(`seeded ${orderBooks.length} order data`)
+  console.log(`order data seeded successfully`)
 }
 
 // We've separated the `seed` function from the `runSeed` function.
