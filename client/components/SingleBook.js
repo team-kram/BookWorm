@@ -6,6 +6,7 @@ class SingleBook extends Component {
   constructor(props) {
     super(props)
     this.state = {book: {}, quantity: 0}
+    this.handleChange = this.handleChange.bind(this)
   }
   componentDidMount() {
     this.props.findBook(this.props.match.params.bookId)
@@ -14,6 +15,12 @@ class SingleBook extends Component {
     if (props.books.currentBookId) {
       this.setState({book: props.books[props.books.currentBookId]})
     }
+  }
+  handleChange(event) {
+    console.log(event.target.value)
+    this.setState({
+      [event.target.name]: event.target.value
+    })
   }
 
   render() {
@@ -30,7 +37,7 @@ class SingleBook extends Component {
             <h3 className="text-center">
               Only {this.state.book.stock} copies left!
             </h3>
-            <form>
+            <form className="mx-auto">
               <div className="form-group">
                 <label htmlFor="quantity">Quantity</label>
                 <input
@@ -39,12 +46,19 @@ class SingleBook extends Component {
                   name="quantity"
                   aria-describedby="quantity"
                   placeholder="Enter quantity"
+                  onChange={this.handleChange}
+                  value={this.state.quantity}
                 />
               </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-primary">
                   Add to cart
                 </button>
+              </div>
+              <div className="form-group">
+                <h3>
+                  ${(this.state.quantity * this.state.book.price).toFixed(2)}
+                </h3>
               </div>
             </form>
           </div>
