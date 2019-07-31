@@ -6,8 +6,10 @@ import {logout} from '../store'
 
 const Navbar = ({handleClick, isLoggedIn}) => (
   <nav className="navbar navbar-nav navbar-primary navbar-expand">
-    <div>
-      <h1 className="navbar-brand">Book Worm</h1>
+    <div className="order-0 ml-3">
+      <a className="navbar-brand mx-auto" href="#">
+        Book Worm
+      </a>
     </div>
     {isLoggedIn ? (
       <ul className="ml-auto navbar-nav">
