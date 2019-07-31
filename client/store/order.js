@@ -26,8 +26,8 @@ export const getOrder = () => async dispatch => {
 
 export const getDeleteOrder = id => {
   return async dispatch => {
-    await Axios.delete(`/api/orders/${id}`)
-    const {data} = await Axios.get('/api/orders')
+    await axios.delete(`/api/orders/${id}`)
+    const {data} = await axios.get('/api/orders')
     dispatch(removeOrder(data))
   }
 }
@@ -36,7 +36,9 @@ export default (orders = defaultOrder, action) => {
   switch (action.type) {
     case GOT_ORDER:
       return action.order
-
+    case REMOVE_ORDER:
+      delete orders[action.id]
+      return orders
     default:
       return orders
   }
