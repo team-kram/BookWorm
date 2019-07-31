@@ -9,7 +9,7 @@ router.get('/', async (req, res, next) => {
       where: {
         completed: true
       },
-      include: [{model: User}]
+      include: [{model: User}, {model: Book, through: OrderBook}]
     })
     res.send(orders)
   } catch (err) {
@@ -20,11 +20,11 @@ router.get('/', async (req, res, next) => {
 // serve up the order at req.params.id eager load order content + quantity
 router.get('/:id', async (req, res, next) => {
   try {
-    const order = await Order.findByPk(req.params.id, {
+    const order = await Order.findOne({
       where: {
         id: req.params.id
       },
-      include: [{model: Book}]
+      include: [{model: Book, through: OrderBook}]
     })
 
     res.send(order)
