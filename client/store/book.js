@@ -13,7 +13,7 @@ const gotBooks = books => {
 const deletedBook = book => {
   return {
     type: DELETED_BOOK,
-    id: book.isbn
+    book
   }
 }
 
@@ -34,7 +34,7 @@ export const getBooks = () => async dispatch => {
 
 export const deleteBook = book => async dispatch => {
   try {
-    await axios.delete(`/api/books/${book.isbn}`)
+    await axios.delete(`/api/books/${book.id}`)
     dispatch(deletedBook(book))
   } catch (error) {
     console.log(error)
@@ -46,7 +46,7 @@ const booksReducer = (state = {}, action) => {
     case GOT_BOOKS:
       return action.books
     case DELETED_BOOK:
-      const copyState = {...state}
+      let copyState = {...state}
       delete copyState[action.book.isbn]
       return copyState
     default:

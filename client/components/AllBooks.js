@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getBooks} from '../store/book'
+import {getBooks, deleteBook} from '../store/book'
 
 class AllBooks extends React.Component {
   constructor(props) {
@@ -26,9 +26,17 @@ class AllBooks extends React.Component {
                 <small>By: {book.author}</small>
                 <p>{book.description}</p>
                 <p>{book.isbn}</p>
-                <p>{book.price}</p>
-                <button className="btn btn-success">Add to Cart</button>
-                <button className="btn btn-danger ml-5">Remove</button>
+                <p>${book.price}</p>
+                <button className="btn btn-success" type="button">
+                  Add to Cart
+                </button>
+                <button
+                  onClick={() => this.props.deleteBook(book)}
+                  className="btn btn-danger ml-4"
+                  type="button"
+                >
+                  Remove book
+                </button>
               </div>
             </div>
           </li>
@@ -57,6 +65,9 @@ function mapDispatchToProps(dispatch) {
   return {
     getBooks: () => {
       dispatch(getBooks())
+    },
+    deleteBook: book => {
+      dispatch(deleteBook(book))
     }
   }
 }
