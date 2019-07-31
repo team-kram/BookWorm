@@ -23,8 +23,12 @@ class AllBooks extends React.Component {
               </div>
               <div className="col-8">
                 <h3>{book.title}</h3>
+                <small>By: {book.author}</small>
                 <p>{book.description}</p>
                 <p>{book.isbn}</p>
+                <p>{book.price}</p>
+                <button className="btn btn-success">Add to Cart</button>
+                <button className="btn btn-danger ml-5">Remove</button>
               </div>
             </div>
           </li>

@@ -7,9 +7,9 @@ import {logout} from '../store'
 const Navbar = ({handleClick, isLoggedIn}) => (
   <nav className="navbar navbar-nav navbar-primary navbar-expand">
     <div className="order-0 ml-3">
-      <a className="navbar-brand mx-auto" href="#">
+      <Link to="/" className="navbar-brand mx-auto">
         Book Worm
-      </a>
+      </Link>
     </div>
     {isLoggedIn ? (
       <ul className="ml-auto navbar-nav">
@@ -26,6 +26,9 @@ const Navbar = ({handleClick, isLoggedIn}) => (
     ) : (
       <ul className="ml-auto navbar-nav">
         {/* The navbar will show these links before you log in */}
+        <li className="nav-item">
+          <Link to="/books">Show inventory</Link>
+        </li>
         <li className="nav-item">
           <Link to="/login">Login</Link>
         </li>

@@ -23,7 +23,7 @@ export const getOrder = () => async dispatch => {
   }
 }
 
-export default (ordersReducer = (orders = defaultOrder, action) => {
+export default (orders = defaultOrder, action) => {
   switch (action.type) {
     case GOT_ORDER:
       return action.order
@@ -31,4 +31,4 @@ export default (ordersReducer = (orders = defaultOrder, action) => {
     default:
       return orders
   }
-})
+}
