@@ -6,20 +6,32 @@ const UPDATE_ORDER = 'UPDATE ORDER'
 
 const defaultOrder = {}
 
-const gotOrder = order => ({
+const gotOrders = order => ({
   type: GET_ORDER,
   order
 })
-const removeOrder = () => ({
-  type: REMOVE_ORDER
+const removeOrder = order => ({
+  type: REMOVE_ORDER,
+  order
 })
 
-export const getOrder = () => async dispatch => {
+export const getOrders = () => async dispatch => {
   try {
-    const orders = await axios.get('/api/orders')
-    dispatch(gotOrder(orders.data))
+    let {data: orders} = await axios.get('/api/orders')
+    orders = orders.reduce((accumulator, current) => {
+      accumulator[current.orderNumber] = current
+      return accumulator
+    }, {})
   } catch (err) {
     console.error(err)
+  }
+}
+
+export const getDeleteOrder = id => {
+  return async dispatch => {
+    await axios.delete(`/api/orders/${id}`)
+    const {data} = await axios.get('/api/orders')
+    dispatch(removeOrder(data))
   }
 }
 
@@ -27,7 +39,8 @@ export default (orders = defaultOrder, action) => {
   switch (action.type) {
     case GOT_ORDER:
       return action.order
-
+    case REMOVE_ORDER:
+      return action.order
     default:
       return orders
   }
