@@ -26,4 +26,5 @@ function makeOrderNumber() {
   }
   return result
 }
+
 module.exports = Order

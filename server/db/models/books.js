@@ -12,7 +12,7 @@ const Book = db.define('book', {
   imageUrl: {
     type: Sequelize.STRING,
     defaultValue:
-      'https://openbookphilly.com/wp-content/uploads/2016/11/bookstack.png'
+      'https://ebookclass.com/wp-content/uploads/2018/07/cracking-the-coding-interview-189-programming-questions-and-solutions-6th-edition-by-gayle-laakmann-mcdowell-ebook-pdf.jpg'
   },
   description: {
     type: Sequelize.TEXT,
