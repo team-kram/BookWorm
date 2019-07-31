@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Order, Book} = require('../db/models')
+const {Order, Book, User, OrderBook} = require('../db/models')
 module.exports = router
 // 'api/orders/'
 // serve up orders for admin
@@ -8,7 +8,8 @@ router.get('/', async (req, res, next) => {
     const orders = await Order.findAll({
       where: {
         completed: true
-      }
+      },
+      include: [{model: User}]
     })
     res.send(orders)
   } catch (err) {
@@ -19,12 +20,13 @@ router.get('/', async (req, res, next) => {
 // serve up the order at req.params.id eager load order content + quantity
 router.get('/:id', async (req, res, next) => {
   try {
-    const order = await Order.findById(req.params.id, {
+    const order = await Order.findByPk(req.params.id, {
       where: {
-        orderbookId: req.params.id
+        id: req.params.id
       },
-      includes: [{model: Book}, {model: OrderBook}]
+      include: [{model: Book}]
     })
+
     res.send(order)
   } catch (err) {
     next(err)

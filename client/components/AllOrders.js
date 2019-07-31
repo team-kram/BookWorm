@@ -13,7 +13,19 @@ class AllOrders extends React.Component {
   render() {
     if (this.props.orders) {
       const arr = Object.keys(this.props.orders)
-      
+      return arr.map(orderNumber => {
+        let order = this.props.orders[orderNumber]
+        return (
+          <li key={order.id} className="list-group-item mb-3">
+            <div className="col-8">
+              <h3>{order.orderNumber}</h3>
+              <small>By: {order.user.name}</small>
+              <p>{order.user.address}</p>
+              <button className="btn btn-danger ml-5">Remove</button>
+            </div>
+          </li>
+        )
+      })
     }
   }
 }
