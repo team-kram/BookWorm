@@ -23,7 +23,7 @@ export const getBooks = () => async dispatch => {
   try {
     let {data: books} = await axios.get('/api/books')
     books = books.reduce((accumulator, current) => {
-      accumulator[current[current.isbn]] = current
+      accumulator[current.isbn] = current
       return accumulator
     }, {})
     dispatch(gotBooks(books))
