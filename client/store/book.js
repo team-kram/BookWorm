@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const GOT_BOOKS = 'GOT_BOOKS'
 const DELETED_BOOK = 'DELETED_BOOK'
+const FOUND_BOOK = 'FOUND_BOOK'
 
 // Action creators
 const gotBooks = books => {
@@ -13,11 +14,17 @@ const gotBooks = books => {
 const deletedBook = book => {
   return {
     type: DELETED_BOOK,
-    id: book.isbn
+    book
+  }
+}
+const foundBook = book => {
+  return {
+    type: FOUND_BOOK,
+    book
   }
 }
 
-// Thunk creator
+// Thunk creators
 
 export const getBooks = () => async dispatch => {
   try {
@@ -34,21 +41,32 @@ export const getBooks = () => async dispatch => {
 
 export const deleteBook = book => async dispatch => {
   try {
-    await axios.delete(`/api/books/${book.isbn}`)
+    await axios.delete(`/api/books/${book.id}`)
     dispatch(deletedBook(book))
   } catch (error) {
     console.log(error)
   }
 }
+export const findBook = id => async dispatch => {
+  try {
+    const {data: book} = await axios.get(`/api/books/${id}`)
+    dispatch(foundBook(book))
+  } catch (error) {
+    console.log(error)
+  }
+}
 
-const booksReducer = (state = {}, action) => {
+const booksReducer = (state = {currentBookId: null}, action) => {
   switch (action.type) {
     case GOT_BOOKS:
-      return action.books
+      return {...action.books, currentBookId: null}
     case DELETED_BOOK:
-      const copyState = {...state}
+      let copyState = {...state}
       delete copyState[action.book.isbn]
       return copyState
+    case FOUND_BOOK:
+      let isbn = action.book.isbn
+      return {...state, [isbn]: action.book, currentBookId: isbn}
     default:
       return state
   }
