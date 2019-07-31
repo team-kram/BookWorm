@@ -10,12 +10,14 @@ const gotBooks = books => {
     books
   }
 }
-const deleteBook = book => {
+const deletedBook = book => {
   return {
     type: DELETED_BOOK,
     id: book.isbn
   }
 }
+
+// Thunk creator
 
 export const getBooks = () => async dispatch => {
   try {
@@ -25,6 +27,15 @@ export const getBooks = () => async dispatch => {
       return accumulator
     }, {})
     dispatch(gotBooks(books))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const deleteBook = book => async dispatch => {
+  try {
+    await axios.delete(`/api/books/${book.isbn}`)
+    dispatch(deletedBook(book))
   } catch (error) {
     console.log(error)
   }
@@ -42,3 +53,5 @@ const booksReducer = (state = {}, action) => {
       return state
   }
 }
+
+export default booksReducer
