@@ -2,6 +2,7 @@ import axios from 'axios'
 
 const GOT_ORDER = 'GOT_ORDER'
 const REMOVE_ORDER = 'REMOVE_ORDER'
+const GOT_SINGLE_ORDER = 'GOT_SINGLE_ORDER'
 const UPDATE_ORDER = 'UPDATE ORDER'
 
 const defaultOrder = {}
@@ -12,6 +13,10 @@ const gotOrders = order => ({
 })
 const removeOrder = order => ({
   type: REMOVE_ORDER,
+  order
+})
+const gotSingleOrder = order => ({
+  type: GOT_SINGLE_ORDER,
   order
 })
 
@@ -33,6 +38,13 @@ export const getDeleteOrder = id => {
     await axios.delete(`/api/orders/${id}`)
     const {data} = await axios.get('/api/orders')
     dispatch(removeOrder(data))
+  }
+}
+
+export const getSingleOrder = id => {
+  return async dispatch => {
+    const {data} = await axios.get(`/api/orders/${id}`)
+    dispatch(gotSingleOrder(data))
   }
 }
 
