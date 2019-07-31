@@ -12,7 +12,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/:id', async (req, res, next) => {
   try {
-    const book = await Book.findById(req.params.id)
+    const book = await Book.findByPk(req.params.id)
     if (!book) {
       res.sendStatus(404)
     } else {
@@ -61,7 +61,7 @@ router.post('/', async (req, res, next) => {
 })
 router.put('/:id', async (req, res, next) => {
   try {
-    const book = await Book.findById(req.params.id)
+    const book = await Book.findByPk(req.params.id)
     if (!book) {
       res.sendStatus(404)
     } else {
@@ -74,7 +74,7 @@ router.put('/:id', async (req, res, next) => {
 })
 router.delete('/:id', async (req, res, next) => {
   try {
-    const book = await Book.findById(req.params.id)
+    const book = await Book.findByPk(req.params.id)
     if (!book) {
       res.sendStatus(404)
     } else {
