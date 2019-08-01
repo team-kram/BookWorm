@@ -16,15 +16,6 @@ const OrderBook = require('./order-book')
  * for example, we can say: const {User} = require('../db/models')
  * instead of: const User = require('../db/models/user')
  */
-
-//User and Order: one to many
-User.hasMany(Order)
-Order.belongsTo(User)
-
-//Order and Book : many to many
-Book.belongsToMany(Order, {through: OrderBook})
-Order.belongsToMany(Book, {through: OrderBook})
-
 module.exports = {
   User,
   Order,
