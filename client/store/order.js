@@ -24,7 +24,7 @@ export const getOrders = () => async dispatch => {
   try {
     let {data: orders} = await axios.get('/api/orders')
     orders = orders.reduce((accumulator, current) => {
-      accumulator[current.orderNumber] = current
+      accumulator[current.id] = current
       return accumulator
     }, {})
     dispatch(gotOrders(orders))
