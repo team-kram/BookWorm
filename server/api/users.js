@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User, Order} = require('../db/models')
+const {User} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -16,11 +16,24 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:UserId', async (req, res, next) => {
+router.post('/', async (req, res, next) => {
+  try {
+    const user = await User.findOrCreate({
+      where: {
+        id: req.body.id
+      }
+    })
+    res.send(user)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.get('/:userId', async (req, res, next) => {
   try {
     const user = await User.findAll({
       where: {
-        id: req.params.UserId
+        id: req.params.userId
       },
       attributes: ['id', 'email']
     })
@@ -34,7 +47,7 @@ router.get('/:UserId', async (req, res, next) => {
   }
 })
 
-router.get('/:UserId/cart', async (req, res, next) => {
+router.get('/:userId/cart', async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: {
@@ -59,9 +72,9 @@ router.get('/:UserId/cart', async (req, res, next) => {
   }
 })
 
-router.get('/:UserId/orders', async (req, res, next) => {
+router.get('/:userId/orders', async (req, res, next) => {
   try {
-    const user = await User.findOne({
+    const user = await User.findAll({
       where: {
         id: req.params.id
       },
@@ -84,22 +97,9 @@ router.get('/:UserId/orders', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
+router.put('/:userId', async (req, res, next) => {
   try {
-    const user = await User.findOrCreate({
-      where: {
-        isbn: req.body.isbn
-      }
-    })
-    res.send(user)
-  } catch (error) {
-    next(error)
-  }
-})
-
-router.put('/:UserId', async (req, res, next) => {
-  try {
-    const user = await User.findById(req.params.UserId)
+    const user = await User.findById(req.params.userId)
     if (!user) {
       res.sendStatus(404)
     } else {
@@ -110,9 +110,10 @@ router.put('/:UserId', async (req, res, next) => {
     next(error)
   }
 })
-router.delete('/:UserId', async (req, res, next) => {
+
+router.delete('/:userId', async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.UserId)
+    const user = await User.findById(req.params.userId)
     if (!user) {
       res.sendStatus(404)
     } else {

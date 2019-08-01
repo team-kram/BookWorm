@@ -1,17 +1,35 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import {auth} from '../store'
+import {auth, addUser} from '../store'
 
 /**
  * COMPONENT
  */
 const AuthForm = props => {
-  const {name, displayName, handleSubmit, error} = props
-
+  const {name, displayName, handleSubmit, error, handleCreateUser} = props
   return (
     <div>
-      <form onSubmit={handleSubmit} name={name}>
+      <form
+        onSubmit={name === 'signup' ? handleCreateUser : handleSubmit}
+        name={name}
+      >
+        {name === 'signup' && (
+          <React.Fragment>
+            <div>
+              <label htmlFor="username">
+                <small>Name</small>
+              </label>
+              <input name="username" type="text" />
+            </div>
+            <div>
+              <label htmlFor="address">
+                <small>Address</small>
+              </label>
+              <input name="address" type="text" />
+            </div>
+          </React.Fragment>
+        )}
         <div>
           <label htmlFor="email">
             <small>Email</small>
@@ -64,7 +82,16 @@ const mapDispatch = dispatch => {
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
-      dispatch(auth(email, password, formName))
+      const name = evt.target.name.value
+      dispatch(auth(email, password, formName, name))
+    },
+    handleCreateUser(evt) {
+      evt.preventDefault()
+      const email = evt.target.email.value
+      const password = evt.target.password.value
+      const username = evt.target.username.value
+      const address = evt.target.address.value
+      dispatch(addUser(email, password, username, address))
     }
   }
 }
