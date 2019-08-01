@@ -17,17 +17,34 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-// serve up the order at req.params.id eager load order content + quantity
-router.get('/:id', async (req, res, next) => {
+router.get('/completed/:userId', async (req, res, next) => {
   try {
-    const order = await Order.findOne({
+    const orders = await Order.findAll({
       where: {
-        id: req.params.id
+        completed: true,
+        userId: req.params.userId
       },
       include: [{model: Book, through: OrderBook}]
     })
+    res.send(orders)
+  } catch (error) {
+    next(error)
+  }
+})
 
-    res.send(order)
+// serve up the order at req.params.id eager load order content + quantity
+router.get('/:id', async (req, res, next) => {
+  try {
+    const cart = await Order.findOrCreate({
+      where: {
+        userId: req.params.id,
+        completed: false
+      },
+      defaults: {completed: false, userId: req.params.id},
+      include: [{model: Book, through: OrderBook}]
+    })
+
+    res.send(cart)
   } catch (err) {
     next(err)
   }
@@ -39,7 +56,7 @@ router.put('/addToCart/:userId', async (req, res, next) => {
   try {
     const book = await Book.findOne({
       where: {
-        isbn: req.body.isbn
+        id: req.body.bookId
       }
     })
     const order = await Order.findOrCreate({
@@ -48,11 +65,13 @@ router.put('/addToCart/:userId', async (req, res, next) => {
         completed: false
       },
       defaults: {
-        completed: false
-      }
+        completed: false,
+        userId: req.params.userId
+      },
+      include: [{model: Book, through: OrderBook}]
     })
     await order.addBook(book, {through: {quantity: req.body.quantity}})
-    res.sendStatus(201)
+    res.status(201).send(order)
   } catch (err) {
     next(err)
   }

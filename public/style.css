@@ -10,6 +10,9 @@ body {
   top: 0;
   left: 0;
 }
+li {
+  list-style: none;
+}
 .overlay {
   position: absolute;
   z-index: 2;

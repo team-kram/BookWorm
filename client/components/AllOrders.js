@@ -1,10 +1,15 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {getOrders} from '../store/order'
+import {getDeleteOrder} from '../store/order'
 
 class AllOrders extends React.Component {
   constructor(props) {
     super(props)
+  }
+
+  DeleteOrder(id) {
+    this.props.getDeleteOrder(id)
   }
 
   componentDidMount() {
@@ -21,7 +26,12 @@ class AllOrders extends React.Component {
               <h3>{order.orderNumber}</h3>
               <small>By: {order.user.name}</small>
               <p>{order.user.address}</p>
-              <button className="btn btn-danger ml-5">Remove</button>
+              <button
+                className="btn btn-danger ml-5"
+                onClick={() => this.DeleteOrder(order.id)}
+              >
+                Remove
+              </button>
             </div>
           </li>
         )
@@ -40,6 +50,9 @@ const mapDispatchToProps = dispatch => {
   return {
     getOrders: () => {
       dispatch(getOrders())
+    },
+    getDeleteOrder: id => {
+      dispatch(getDeleteOrder(id))
     }
   }
 }
