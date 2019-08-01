@@ -11,18 +11,23 @@ const gotBooks = books => {
     books
   }
 }
-const deletedBook = book => {
-  return {
-    type: DELETED_BOOK,
-    book
-  }
-}
-const foundBook = book => {
-  return {
-    type: FOUND_BOOK,
-    book
-  }
-}
+
+// const deletedBook = book => {
+//   return {
+//     type: DELETED_BOOK,
+//     book
+//   }
+// }
+
+const deletedBook = book => ({
+  type: DELETED_BOOK,
+  book
+})
+
+const foundBook = book => ({
+  type: FOUND_BOOK,
+  book
+})
 
 // Thunk creators
 
