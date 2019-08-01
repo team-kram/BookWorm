@@ -3,18 +3,13 @@ import {connect} from 'react-redux'
 import {getBooks, deleteBook} from '../store/book'
 
 class AllBooks extends React.Component {
-  constructor(props) {
-    super(props)
-    this.renderList = this.renderList.bind(this)
-    this.selectBook = this.selectBook.bind(this)
-  }
   componentDidMount() {
     this.props.getBooks()
   }
-  selectBook(id) {
+  selectBook = id => {
     this.props.history.push(`/books/${id}`)
   }
-  renderList() {
+  renderList = () => {
     if (this.props.books) {
       const arr = Object.keys(this.props.books)
       return arr.map(key => {

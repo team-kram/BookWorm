@@ -6,7 +6,6 @@ class SingleBook extends Component {
   constructor(props) {
     super(props)
     this.state = {book: {}, quantity: 0}
-    this.handleChange = this.handleChange.bind(this)
   }
   componentDidMount() {
     this.props.findBook(this.props.match.params.bookId)
@@ -16,8 +15,8 @@ class SingleBook extends Component {
       this.setState({book: props.books[props.books.currentBookId]})
     }
   }
-  handleChange(event) {
-    console.log(event.target.value)
+  handleChange = event => {
+    //arrow
     this.setState({
       [event.target.name]: event.target.value
     })
