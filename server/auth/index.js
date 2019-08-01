@@ -1,6 +1,5 @@
 const router = require('express').Router()
 const User = require('../db/models/user')
-const Order = require('../db/models/user')
 module.exports = router
 
 router.post('/login', async (req, res, next) => {
@@ -30,102 +29,6 @@ router.post('/signup', async (req, res, next) => {
     } else {
       next(err)
     }
-  }
-})
-
-router.get('/:userId', async (req, res, next) => {
-  try {
-    const user = await User.findAll({
-      where: {
-        id: req.params.userId
-      },
-      attributes: ['id', 'email']
-    })
-    if (!user) {
-      res.sendStatus(404)
-    } else {
-      res.send(user)
-    }
-  } catch (error) {
-    next(error)
-  }
-})
-
-router.get('/:userId/cart', async (req, res, next) => {
-  try {
-    const user = await User.findOne({
-      where: {
-        id: req.params.id
-      },
-      include: [
-        {
-          model: Order,
-          where: {
-            completed: false
-          }
-        }
-      ]
-    })
-    if (!user) {
-      res.sendStatus(404)
-    } else {
-      res.send(user)
-    }
-  } catch (error) {
-    next(error)
-  }
-})
-
-router.get('/:userId/orders', async (req, res, next) => {
-  try {
-    const user = await User.findAll({
-      where: {
-        id: req.params.id
-      },
-      include: [
-        {
-          model: Order,
-          where: {
-            completed: true
-          }
-        }
-      ]
-    })
-    if (!user) {
-      res.sendStatus(404)
-    } else {
-      res.send(user)
-    }
-  } catch (error) {
-    next(error)
-  }
-})
-
-router.put('/:userId', async (req, res, next) => {
-  try {
-    const user = await User.findById(req.params.userId)
-    if (!user) {
-      res.sendStatus(404)
-    } else {
-      await user.update(req.body)
-      res.send(user)
-    }
-  } catch (error) {
-    next(error)
-  }
-})
-
-router.delete('/:userId', async (req, res, next) => {
-  try {
-    const user = await User.findById(req.params.userId)
-    if (!user) {
-      res.sendStatus(404)
-    } else {
-      await user.destroy()
-      res.sendStatus(204)
-    }
-  } catch (error) {
-    next(error)
   }
 })
 
