@@ -17,12 +17,28 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+router.get('/completed/:userId', async (req, res, next) => {
+  try {
+    const orders = await Order.findAll({
+      where: {
+        completed: true,
+        userId: req.params.userId
+      },
+      include: [{model: Book, through: OrderBook}]
+    })
+    res.send(orders)
+  } catch (error) {
+    next(error)
+  }
+})
+
 // serve up the order at req.params.id eager load order content + quantity
 router.get('/:id', async (req, res, next) => {
   try {
     const cart = await Order.findOrCreate({
       where: {
-        userId: req.params.id
+        userId: req.params.id,
+        completed: false
       },
       defaults: {completed: false, userId: req.params.id},
       include: [{model: Book, through: OrderBook}]

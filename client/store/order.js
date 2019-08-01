@@ -4,6 +4,8 @@ const GOT_ORDER = 'GOT_ORDER'
 const REMOVE_ORDER = 'REMOVE_ORDER'
 const GOT_SINGLE_ORDER = 'GOT_SINGLE_ORDER'
 const UPDATE_ORDER = 'UPDATE ORDER'
+const GOT_CART = 'GOT_CART'
+const GOT_COMPLETED = 'GOT_COMPLETED'
 
 const defaultOrder = {}
 
@@ -18,6 +20,16 @@ const removeOrder = order => ({
 const gotSingleOrder = order => ({
   type: GOT_SINGLE_ORDER,
   order
+})
+const gotCart = cart => ({
+  type: GOT_CART,
+  cart
+})
+
+// gets completed orders for current user
+const gotCompleted = completed => ({
+  type: GOT_COMPLETED,
+  completed
 })
 
 export const getOrders = () => async dispatch => {
@@ -48,13 +60,30 @@ export const getSingleOrder = id => {
   }
 }
 
-export default (orders = defaultOrder, action) => {
+export const getCart = userId => async dispatch => {
+  const {data: cart} = await axios.get(`/api/orders/${userId}`)
+  dispatch(gotCart(cart))
+}
+
+export const getCompleted = userId => async dispatch => {
+  const {data: completedOrders} = await axios.get(
+    `/api/orders/completed/${userId}`
+  )
+  dispatch(gotCompleted(completedOrders))
+}
+
+// state = {completedOrders: {orders where completed is true, id has to match userId}, cart: {order where completed is false}}
+export default (state = {completedOrders: [], cart: {}}, action) => {
   switch (action.type) {
     case GOT_ORDER:
-      return action.order
+      return {...state, completedOrders: action.order}
     case REMOVE_ORDER:
-      return action.order
+      return {...state, completedOrders: action.order}
+    case GOT_CART:
+      return {...state, cart: action.cart}
+    case GOT_COMPLETED:
+      return {...state, completedOrders: action.completed}
     default:
-      return orders
+      return {...state}
   }
 }

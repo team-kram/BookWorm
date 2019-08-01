@@ -18,6 +18,16 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           <Link to="/home">Home</Link>
         </li>
         <li className="nav-item">
+          <NavLink activeClassName="active-link" to="/books">
+            Show inventory
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink activeClassName="active-link" to="/completed-orders">
+            Orders
+          </NavLink>
+        </li>
+        <li className="nav-item">
           <a href="#" onClick={handleClick}>
             Logout
           </a>
