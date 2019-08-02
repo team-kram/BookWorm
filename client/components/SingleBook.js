@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {findBook} from '../store/book'
+import {updateCart} from '../store/order'
 
 class SingleBook extends Component {
   constructor(props) {
@@ -22,12 +23,25 @@ class SingleBook extends Component {
     })
   }
 
+  handleSubmit = e => {
+    e.preventDefault()
+    console.log(this.props.user.id)
+    if (this.props.isLoggedIn) {
+      this.props.updateCart(
+        this.props.match.params.bookId,
+        this.props.user.id,
+        this.state.quantity
+      )
+    }
+    this.props.history.push('/books')
+  }
+
   render() {
     return Object.keys(this.state.book).length ? (
       <div className="container">
         <div className="row">
           <div className="col-4">
-            <img src={this.state.book.imageUrl} />
+            <img className="w-100" src={this.state.book.imageUrl} />
           </div>
           <div className="col-8">
             <h1>{this.state.book.title}</h1>
@@ -36,7 +50,7 @@ class SingleBook extends Component {
             <h3 className="text-center">
               Only {this.state.book.stock} copies left!
             </h3>
-            <form className="mx-auto">
+            <form onSubmit={this.handleSubmit} className="mx-auto">
               <div className="form-group">
                 <label htmlFor="quantity">Quantity</label>
                 <input
@@ -71,13 +85,17 @@ class SingleBook extends Component {
 
 function mapStateToProps(state) {
   return {
-    books: state.books
+    books: state.books,
+    user: state.user
   }
 }
 function mapDispatchToProps(dispatch) {
   return {
     findBook: bookId => {
       dispatch(findBook(bookId))
+    },
+    updateCart: (bookId, userId, quantity) => {
+      dispatch(updateCart(bookId, userId, quantity))
     }
   }
 }

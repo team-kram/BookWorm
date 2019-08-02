@@ -28,6 +28,11 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           </NavLink>
         </li>
         <li className="nav-item">
+          <NavLink activeClassName="active-link" to="/cart">
+            Cart
+          </NavLink>
+        </li>
+        <li className="nav-item">
           <a href="#" onClick={handleClick}>
             Logout
           </a>
@@ -42,6 +47,11 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           </NavLink>
         </li>
         <li className="nav-item">
+          <NavLink activeClassName="active-link" to="/cart">
+            Cart
+          </NavLink>
+        </li>
+        <li className="nav-item">
           <NavLink activeClassName="active-link" to="/login">
             Login
           </NavLink>
@@ -51,11 +61,11 @@ const Navbar = ({handleClick, isLoggedIn}) => (
             Sign Up
           </NavLink>
         </li>
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <NavLink activeClassName="active-link" to="/orders">
             Orders
           </NavLink>
-        </li>
+        </li> */}
       </ul>
     )}
   </nav>

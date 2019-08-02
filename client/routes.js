@@ -28,7 +28,6 @@ class Routes extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route exact path="/books" component={AllBooks} />
-        <Route exact path="/books/:bookId" component={SingleBook} />
         <Route exact path="/orders" component={AllOrders} />
         {isLoggedIn && (
           <Switch>
@@ -36,7 +35,13 @@ class Routes extends Component {
             <Route path="/home" component={UserHome} />
             <Route path="/completed-orders" component={Orders} />
             <Route exact path="/books" component={AllBooks} />
-            <Route exact path="/books/:bookId" component={SingleBook} />
+            <Route
+              exact
+              path="/books/:bookId"
+              render={navProps => (
+                <SingleBook isLoggedIn={isLoggedIn} {...navProps} />
+              )}
+            />
             <Route
               exact
               path="/cart"
@@ -46,6 +51,13 @@ class Routes extends Component {
             />
           </Switch>
         )}
+        <Route
+          exact
+          path="/books/:bookId"
+          render={navProps => (
+            <SingleBook isLoggedIn={isLoggedIn} {...navProps} />
+          )}
+        />
         <Route
           exact
           path="/cart"
