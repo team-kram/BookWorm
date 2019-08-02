@@ -3,9 +3,9 @@ import axios from 'axios'
 const GOT_ORDER = 'GOT_ORDER'
 const REMOVE_ORDER = 'REMOVE_ORDER'
 const GOT_SINGLE_ORDER = 'GOT_SINGLE_ORDER'
-const UPDATE_ORDER = 'UPDATE ORDER'
 const GOT_CART = 'GOT_CART'
 const GOT_COMPLETED = 'GOT_COMPLETED'
+const UPDATED_CART = 'UPDATED_CART'
 
 const defaultOrder = {}
 
@@ -32,6 +32,10 @@ const gotCompleted = completed => ({
   completed
 })
 
+const gotUpdatedCart = cart => ({
+  type: UPDATED_CART,
+  cart
+})
 export const getOrders = () => async dispatch => {
   try {
     let {data: orders} = await axios.get('/api/orders')
@@ -72,6 +76,16 @@ export const getCompleted = userId => async dispatch => {
   dispatch(gotCompleted(completedOrders))
 }
 
+export const updateCart = (bookId, userId, quantity) => async dispatch => {
+  const update = {id: bookId, quantity}
+  const {data: updatedCart} = await axios.put(
+    `/api/orders/addToCart/${userId}`,
+    update
+  )
+  console.log(updateCart)
+  dispatch(gotUpdatedCart(updatedCart))
+}
+
 // state = {completedOrders: {orders where completed is true, id has to match userId}, cart: {order where completed is false}}
 export default (state = {completedOrders: [], cart: {}}, action) => {
   switch (action.type) {
@@ -83,6 +97,10 @@ export default (state = {completedOrders: [], cart: {}}, action) => {
       return {...state, cart: action.cart}
     case GOT_COMPLETED:
       return {...state, completedOrders: action.completed}
+    case UPDATED_CART:
+      const cartCopy = {...state.cart}
+      cartCopy.books = action.cart
+      return {...state, cart: cartCopy}
     default:
       return {...state}
   }

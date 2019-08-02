@@ -54,24 +54,23 @@ router.get('/:id', async (req, res, next) => {
 router.put('/addToCart/:userId', async (req, res, next) => {
   // req.body : isbn, quantity { isbn, quantity}
   try {
-    const book = await Book.findOne({
+    const book = await Book.findByPk(req.body.id)
+    let order = await Order.findOne({
       where: {
-        id: req.body.bookId
+        userId: parseInt(req.params.userId),
+        completed: false
       }
     })
-    const order = await Order.findOrCreate({
-      where: {
-        userId: req.params.userId,
+    if (!order) {
+      order = await Order.create({
         completed: false
-      },
-      defaults: {
-        completed: false,
-        userId: req.params.userId
-      },
-      include: [{model: Book, through: OrderBook}]
+      })
+    }
+    await order.addBook(book, {
+      through: {quantity: parseInt(req.body.quantity)}
     })
-    await order.addBook(book, {through: {quantity: req.body.quantity}})
-    res.status(201).send(order)
+    let books = await order.getBooks()
+    res.send(books)
   } catch (err) {
     next(err)
   }

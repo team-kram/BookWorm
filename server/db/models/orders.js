@@ -9,13 +9,4 @@ const Order = db.define('order', {
   }
 })
 
-Order.prototype.addBook = async function(book, quantity) {
-  await OrderBook.create({
-    quantity,
-    bookId: book.id,
-    orderId: this.id
-  })
-  return this
-}
-
 module.exports = Order

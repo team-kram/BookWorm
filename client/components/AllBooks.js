@@ -19,7 +19,7 @@ class AllBooks extends React.Component {
             <li key={book.id} className="list-group-item mb-3">
               <div className="row">
                 <div className="col-4">
-                  <img className="h-75" src={book.imageUrl} />
+                  <img className="w-75" src={book.imageUrl} />
                 </div>
                 <div className="col-8">
                   <h2 className="text-center">{book.title}</h2>
