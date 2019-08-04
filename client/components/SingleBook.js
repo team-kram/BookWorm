@@ -25,15 +25,32 @@ class SingleBook extends Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    console.log(this.props.user.id)
     if (this.props.isLoggedIn) {
       this.props.updateCart(
         this.props.match.params.bookId,
         this.props.user.id,
         this.state.quantity
       )
+    } else {
+      const storage = window.localStorage
+      let cart = JSON.parse(storage.getItem('cart'))
+      console.log(cart)
+      if (!cart) {
+        cart = {
+          completed: false,
+          books: [
+            {...this.state.book, 'order-book': {quantity: this.state.quantity}}
+          ]
+        }
+      } else {
+        cart.books.push({
+          ...this.state.book,
+          'order-book': {quantity: this.state.quantity}
+        })
+        storage.setItem('cart', JSON.stringify(cart))
+      }
+      this.props.history.push('/books')
     }
-    this.props.history.push('/books')
   }
 
   render() {
