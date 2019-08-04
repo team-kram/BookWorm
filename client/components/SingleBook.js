@@ -34,7 +34,6 @@ class SingleBook extends Component {
     } else {
       const storage = window.localStorage
       let cart = JSON.parse(storage.getItem('cart'))
-      console.log(cart)
       if (!cart) {
         cart = {
           completed: false,
@@ -49,24 +48,24 @@ class SingleBook extends Component {
         })
         storage.setItem('cart', JSON.stringify(cart))
       }
-      this.props.history.push('/books')
     }
+    this.props.history.push('/books')
   }
 
   render() {
-    return Object.keys(this.state.book).length ? (
+    const {title, author, description, stock, imageUrl, price} = this.state.book
+    const {book, quantity} = this.state
+    return Object.keys(book).length ? (
       <div className="container">
         <div className="row">
           <div className="col-4">
-            <img className="w-100" src={this.state.book.imageUrl} />
+            <img className="w-100" src={imageUrl} />
           </div>
           <div className="col-8">
-            <h1>{this.state.book.title}</h1>
-            <p>by: {this.state.book.author}</p>
-            <p>{this.state.book.description}</p>
-            <h3 className="text-center">
-              Only {this.state.book.stock} copies left!
-            </h3>
+            <h1>{title}</h1>
+            <p>by: {author}</p>
+            <p>{description}</p>
+            <h3 className="text-center">Only {stock} copies left!</h3>
             <form onSubmit={this.handleSubmit} className="mx-auto">
               <div className="form-group">
                 <label htmlFor="quantity">Quantity</label>
@@ -77,7 +76,7 @@ class SingleBook extends Component {
                   aria-describedby="quantity"
                   placeholder="Enter quantity"
                   onChange={this.handleChange}
-                  value={this.state.quantity}
+                  value={quantity}
                 />
               </div>
               <div className="form-group">
@@ -86,16 +85,14 @@ class SingleBook extends Component {
                 </button>
               </div>
               <div className="form-group">
-                <h3>
-                  ${(this.state.quantity * this.state.book.price).toFixed(2)}
-                </h3>
+                <h3>${(this.state.quantity * price).toFixed(2)}</h3>
               </div>
             </form>
           </div>
         </div>
       </div>
     ) : (
-      <h1>Loading...</h1>
+      <h1 className="text-center">Book not found</h1>
     )
   }
 }

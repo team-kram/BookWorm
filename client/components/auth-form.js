@@ -9,45 +9,51 @@ import {auth, addUser} from '../store'
 const AuthForm = props => {
   const {name, displayName, handleSubmit, error, handleCreateUser} = props
   return (
-    <div>
+    <div className="container w-50">
+      <h1>{displayName}</h1>
       <form
         onSubmit={name === 'signup' ? handleCreateUser : handleSubmit}
         name={name}
       >
         {name === 'signup' && (
           <React.Fragment>
-            <div>
+            <div className="form-group">
               <label htmlFor="username">
                 <small>Name</small>
               </label>
-              <input name="username" type="text" />
+              <input className="form-control" name="username" type="text" />
             </div>
-            <div>
+            <div className="form-group">
               <label htmlFor="address">
                 <small>Address</small>
               </label>
-              <input name="address" type="text" />
+              <input className="form-control" name="address" type="text" />
             </div>
           </React.Fragment>
         )}
-        <div>
+        <div className="form-group">
           <label htmlFor="email">
             <small>Email</small>
           </label>
-          <input name="email" type="text" />
+          <input className="form-control" name="email" type="text" />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="password">
             <small>Password</small>
           </label>
-          <input name="password" type="password" />
+          <input className="form-control" name="password" type="password" />
         </div>
-        <div>
-          <button type="submit">{displayName}</button>
+        <div className="form-group">
+          <button className="btn btn-primary w-100" type="submit">
+            {displayName}
+          </button>
         </div>
         {error && error.response && <div> {error.response.data} </div>}
+        <a className="btn btn-danger w-100" href="/auth/google">
+          <i className="fa fa-google fa-lg mr-2" aria-hidden="true" />{' '}
+          {displayName} with Google
+        </a>
       </form>
-      <a href="/auth/google">{displayName} with Google</a>
     </div>
   )
 }
