@@ -14,6 +14,13 @@ class Cart extends Component {
     } else {
       let storage = window.localStorage
       let cart = JSON.parse(storage.getItem('cart'))
+      if (!cart) {
+        cart = {
+          completed: false,
+          books: []
+        }
+        storage.setItem('cart', JSON.stringify(cart))
+      }
       this.setState(cart)
     }
   }
@@ -51,7 +58,7 @@ class Cart extends Component {
         </ul>
       </div>
     ) : (
-      <h1>Loading...</h1>
+      <h1 className="text-center">Loading...</h1>
     )
   }
 }
