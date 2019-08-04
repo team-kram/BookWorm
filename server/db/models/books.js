@@ -22,17 +22,24 @@ const Book = db.define('book', {
     }
   },
   author: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   genre: {
     type: Sequelize.STRING
   },
   stock: {
     type: Sequelize.INTEGER,
-    defaultValue: 0
+    defaultValue: 0,
+    validate: {
+      min: 0
+    }
   },
   price: {
-    type: Sequelize.DOUBLE,
+    type: Sequelize.DOUBLE, // Should change to INTEGER
     allowNull: false
   },
   isbn: {

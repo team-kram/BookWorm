@@ -59,6 +59,11 @@ nav a {
   display: inline-block;
   margin: 1em;
 }
+.checkout-box {
+  border: 1px solid #eee;
+  max-height: 250px;
+  border-radius: 10px;
+}
 
 /* form div {
   margin: 1em;

@@ -80,7 +80,14 @@ class SingleBook extends Component {
                 />
               </div>
               <div className="form-group">
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={
+                    this.state.quantity <= 0 ||
+                    this.state.quantity.match(/a-z\?\{\}\[\]\w\*\+/gi)
+                  }
+                >
                   Add to cart
                 </button>
               </div>
