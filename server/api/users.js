@@ -55,7 +55,7 @@ router.get('/:userId/cart', isAuthenticated, async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: {
-        id: req.params.id
+        id: req.params.userId
       },
       include: [
         {
@@ -81,7 +81,7 @@ router.get('/:userId/orders', isAuthenticated, async (req, res, next) => {
   try {
     const user = await User.findAll({
       where: {
-        id: req.params.id
+        id: req.params.userId
       },
       include: [
         {
