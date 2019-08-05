@@ -1,18 +1,45 @@
 const router = require('express').Router()
 const {Book, Order} = require('../db/models')
+const {isAuthenticated, isAdmin} = require('./authentication')
 
+// get all books, unprotected
 router.get('/', async (req, res, next) => {
   try {
-    const books = await Book.findAll()
+    const books = await Book.findAll({
+      attributes: [
+        'id',
+        'title',
+        'isbn',
+        'author',
+        'genre',
+        'price',
+        'stock',
+        'description',
+        'imageUrl'
+      ]
+    })
     res.send(books)
   } catch (error) {
     next(error)
   }
 })
 
+// get book by id, unprotected
 router.get('/:id', async (req, res, next) => {
   try {
-    const book = await Book.findByPk(req.params.id)
+    const book = await Book.findByPk(req.params.id, {
+      attributes: [
+        'id',
+        'title',
+        'isbn',
+        'author',
+        'genre',
+        'price',
+        'stock',
+        'description',
+        'imageUrl'
+      ]
+    })
     if (!book) {
       res.sendStatus(404)
     } else {
@@ -23,6 +50,7 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
+// get order by book's id, unprotected
 router.get('/:id/orders', async (req, res, next) => {
   try {
     const book = await Book.findOne({
@@ -47,7 +75,9 @@ router.get('/:id/orders', async (req, res, next) => {
     next(error)
   }
 })
-router.post('/', async (req, res, next) => {
+
+// add book, protected
+router.post('/', isAdmin, async (req, res, next) => {
   try {
     const book = await Book.findOrCreate({
       where: {
@@ -59,7 +89,9 @@ router.post('/', async (req, res, next) => {
     next(error)
   }
 })
-router.put('/:id', async (req, res, next) => {
+
+// edit book, protected
+router.put('/:id', isAdmin, async (req, res, next) => {
   try {
     const book = await Book.findByPk(req.params.id)
     if (!book) {
@@ -72,7 +104,9 @@ router.put('/:id', async (req, res, next) => {
     next(error)
   }
 })
-router.delete('/:id', async (req, res, next) => {
+
+// delete book, protected
+router.delete('/:id', isAdmin, async (req, res, next) => {
   try {
     const book = await Book.findByPk(req.params.id)
     if (!book) {

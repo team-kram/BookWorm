@@ -1,21 +1,23 @@
 const router = require('express').Router()
-const {User} = require('../db/models')
-module.exports = router
+const {User, Order} = require('../db/models')
+const {isAuthenticated, isAdmin} = require('./authentication')
 
-router.get('/', async (req, res, next) => {
+// get all users, protected
+router.get('/', isAdmin, async (req, res, next) => {
   try {
     const users = await User.findAll({
       // explicitly select only the id and email fields - even though
       // users' passwords are encrypted, it won't help if we just
       // send everything to anyone who asks!
-      attributes: ['id', 'email']
+      attributes: ['id', 'name', 'email', 'address', 'admin']
     })
-    res.json(users)
+    res.send(users)
   } catch (err) {
     next(err)
   }
 })
 
+// create user, unprotected
 router.post('/', async (req, res, next) => {
   try {
     const user = await User.findOrCreate({
@@ -29,7 +31,8 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.get('/:userId', async (req, res, next) => {
+// get user by id, protected
+router.get('/:userId', isAuthenticated, async (req, res, next) => {
   try {
     const user = await User.findAll({
       where: {
@@ -47,7 +50,8 @@ router.get('/:userId', async (req, res, next) => {
   }
 })
 
-router.get('/:userId/cart', async (req, res, next) => {
+// get users's cart, protected
+router.get('/:userId/cart', isAuthenticated, async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: {
@@ -72,7 +76,8 @@ router.get('/:userId/cart', async (req, res, next) => {
   }
 })
 
-router.get('/:userId/orders', async (req, res, next) => {
+// get user's orders, protected
+router.get('/:userId/orders', isAuthenticated, async (req, res, next) => {
   try {
     const user = await User.findAll({
       where: {
@@ -97,7 +102,8 @@ router.get('/:userId/orders', async (req, res, next) => {
   }
 })
 
-router.put('/:userId', async (req, res, next) => {
+// edit user info, protected
+router.put('/:userId', isAuthenticated, async (req, res, next) => {
   try {
     const user = await User.findById(req.params.userId)
     if (!user) {
@@ -111,7 +117,8 @@ router.put('/:userId', async (req, res, next) => {
   }
 })
 
-router.delete('/:userId', async (req, res, next) => {
+// delete user, protected
+router.delete('/:userId', isAdmin, async (req, res, next) => {
   try {
     const user = await User.findById(req.params.userId)
     if (!user) {
@@ -124,3 +131,5 @@ router.delete('/:userId', async (req, res, next) => {
     next(error)
   }
 })
+
+module.exports = router
