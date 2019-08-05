@@ -1,8 +1,5 @@
 const isAuthenticated = (req, res, next) => {
-  if (
-    req.isAuthenticated() &&
-    (req.user.admin || req.user.id === req.params.id)
-  ) {
+  if (req.isAuthenticated()) {
     return next()
   }
   res.redirect('/')

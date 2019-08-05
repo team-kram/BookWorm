@@ -98,6 +98,33 @@ router.post('/purchase/:userId', isAuthenticated, async (req, res, next) => {
 })
 
 // delete the order at req.params.id, protected
+
+router.delete('/removeCart', async (req, res, next) => {
+  try {
+    const book = await Book.findByPk(req.body.bookId)
+    const order = await Order.findByPk(req.body.orderId)
+    await order.removeBook(book)
+    res.sendStatus(201)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.put('/editCart', async (req, res, next) => {
+  try {
+    const item = await OrderBook.findOne({
+      where: {
+        bookId: req.body.bookId,
+        orderId: req.body.orderId
+      }
+    })
+    await item.update(req.body)
+    res.send(item)
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.delete('/:id', isAdmin, async (req, res, next) => {
   try {
     const id = await Order.findById(req.params.id)
