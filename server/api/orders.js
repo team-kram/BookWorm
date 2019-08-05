@@ -12,7 +12,6 @@ router.get('/', isAdmin, async (req, res, next) => {
       },
       include: [{model: User}, {model: Book, through: OrderBook}]
     })
-    console.log(req.user)
     res.send(orders)
   } catch (err) {
     next(err)
@@ -35,14 +34,14 @@ router.get('/completed/:userId', isAuthenticated, async (req, res, next) => {
 })
 
 // serve up the order at req.params.id eager load order content + quantity
-router.get('/:id', isAuthenticated, async (req, res, next) => {
+router.get('/:userId', isAuthenticated, async (req, res, next) => {
   try {
     const cart = await Order.findOrCreate({
       where: {
-        userId: req.params.id,
+        userId: req.params.userId,
         completed: false
       },
-      defaults: {completed: false, userId: req.params.id},
+      defaults: {completed: false, userId: req.params.userId},
       include: [{model: Book, through: OrderBook}]
     })
 

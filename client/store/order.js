@@ -82,7 +82,6 @@ export const updateCart = (bookId, userId, quantity) => async dispatch => {
     `/api/orders/addToCart/${userId}`,
     update
   )
-  console.log(updateCart)
   dispatch(gotUpdatedCart(updatedCart))
 }
 

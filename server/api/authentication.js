@@ -1,7 +1,7 @@
 const isAuthenticated = (req, res, next) => {
   if (
     req.isAuthenticated() &&
-    (req.user.admin || req.user.id === req.params.id)
+    (req.user.admin || req.user.id === parseInt(req.params.userId))
   ) {
     return next()
   }
@@ -9,7 +9,9 @@ const isAuthenticated = (req, res, next) => {
 }
 
 const isAdmin = (req, res, next) => {
-  if (req.user && req.user.admin) next()
+  if (req.user && req.user.admin) {
+    return next()
+  }
   res.redirect('/')
 }
 
