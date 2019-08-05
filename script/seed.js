@@ -563,12 +563,6 @@ async function seed() {
 
   const allUsers = [
     {
-      name: 'test',
-      email: 'test@email.com',
-      address: 'Somewhere',
-      password: 'test'
-    },
-    {
       name: 'Team Kram',
       email: 'teamkram@bookworm.com',
       address: 'Somewhere',
