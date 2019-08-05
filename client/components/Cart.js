@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getCart, deleteItem, updateItem} from '../store/order'
+import Item from './Item'
 
 const storage = window.localStorage
 class Cart extends Component {
@@ -56,60 +57,43 @@ class Cart extends Component {
 
   render() {
     const cart = this.state
+    console.log(cart)
     return Object.keys(cart).length ? (
       <div className="container">
         <h1>Cart</h1>
         <div className="row">
           <div className="col-8 cart-items">
             <ul>
-              {cart.books.map(book => (
-                <li className="mb-2" key={book.id}>
-                  <div className="row">
-                    <div className="col-4">
-                      <img className="w-75" src={book.imageUrl} />
-                    </div>
-                    <div className="col-8">
-                      <h3>{book.title}</h3>
-                      <p>Author: {book.author}</p>
-                      <p>Price per book: ${book.price}</p>
-                      <p>Quantity: {book['order-book'].quantity}</p>
-                      <p>
-                        Total price: ${(
-                          book.price * book['order-book'].quantity
-                        ).toFixed(2)}
-                      </p>
-                      <button
-                        onClick={() => this.handleRemove(book.id)}
-                        type="button"
-                        className="btn btn-danger"
-                      >
-                        Remove
-                      </button>
-                      <button type="button" className="btn btn-secondary ml-2">
-                        Edit Quantity
-                      </button>
-                    </div>
-                  </div>
-                </li>
-              ))}
+              {cart.books &&
+                cart.books.map(book => (
+                  <Item
+                    key={book.id}
+                    book={book}
+                    handleRemove={this.handleRemove}
+                    updateItem={this.props.updateItem}
+                    orderId={cart.id}
+                  />
+                ))}
             </ul>
           </div>
           <div className="col-4 p-3 h-auto checkout-box">
             <h4>
-              Subtotal ({cart.books.reduce(
-                (accumulator, book) =>
-                  accumulator + parseInt(book['order-book'].quantity),
-                0
-              )}{' '}
+              Subtotal ({cart.books &&
+                cart.books.reduce(
+                  (accumulator, book) =>
+                    accumulator + parseInt(book['order-book'].quantity),
+                  0
+                )}{' '}
               Items) :{' '}
               <span className="text-danger">
-                ${cart.books
-                  .reduce((accumulator, book) => {
-                    return (
-                      accumulator + book.price * book['order-book'].quantity
-                    )
-                  }, 0)
-                  .toFixed(2)}
+                ${cart.books &&
+                  cart.books
+                    .reduce((accumulator, book) => {
+                      return (
+                        accumulator + book.price * book['order-book'].quantity
+                      )
+                    }, 0)
+                    .toFixed(2)}
               </span>
             </h4>
             <hr />
@@ -151,6 +135,9 @@ const mapDispatchToProps = dispatch => ({
   },
   deleteItem: (bookId, orderId) => {
     dispatch(deleteItem(bookId, orderId))
+  },
+  updateItem: (bookId, orderId, quantity) => {
+    dispatch(updateItem(bookId, orderId, quantity))
   }
 })
 

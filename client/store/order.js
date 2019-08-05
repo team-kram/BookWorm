@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import axios from 'axios'
 
 const GOT_ORDER = 'GOT_ORDER'
@@ -128,15 +129,16 @@ export default (state = {completedOrders: [], cart: {}}, action) => {
       return {...state, cart: cartCopy}
     case UPDATED_ITEM:
       const newCart = {...state.cart}
-      newCart.books = newCart.books.forEach(book => {
+      for (let i = 0; i < newCart.books.length; i++) {
+        let book = newCart.books[i]
         if (book.id === action.item.bookId) {
           book['order-book'].quantity = action.item.quantity
         }
-      })
+      }
       return {...state, cart: newCart}
     case DELETED_ITEM:
       const copyCart = {...state.cart}
-      copyCart[0].books = copyCart[0].books.filter(
+      copyCart.books = copyCart.books.filter(
         book => book.id !== action.item.bookId
       )
       return {...state, cart: copyCart}
