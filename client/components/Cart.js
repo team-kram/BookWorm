@@ -64,36 +64,33 @@ class Cart extends Component {
         <div className="row">
           <div className="col-8 cart-items">
             <ul>
-              {cart.books &&
-                cart.books.map(book => (
-                  <Item
-                    key={book.id}
-                    book={book}
-                    handleRemove={this.handleRemove}
-                    updateItem={this.props.updateItem}
-                    orderId={cart.id}
-                  />
-                ))}
+              {cart.books.map(book => (
+                <Item
+                  key={book.id}
+                  book={book}
+                  handleRemove={this.handleRemove}
+                  updateItem={this.props.updateItem}
+                  orderId={cart.id}
+                />
+              ))}
             </ul>
           </div>
           <div className="col-4 p-3 h-auto checkout-box">
             <h4>
-              Subtotal ({cart.books &&
-                cart.books.reduce(
-                  (accumulator, book) =>
-                    accumulator + parseInt(book['order-book'].quantity),
-                  0
-                )}{' '}
+              Subtotal ({cart.books.reduce(
+                (accumulator, book) =>
+                  accumulator + parseInt(book['order-book'].quantity),
+                0
+              )}{' '}
               Items) :{' '}
               <span className="text-danger">
-                ${cart.books &&
-                  cart.books
-                    .reduce((accumulator, book) => {
-                      return (
-                        accumulator + book.price * book['order-book'].quantity
-                      )
-                    }, 0)
-                    .toFixed(2)}
+                ${cart.books
+                  .reduce((accumulator, book) => {
+                    return (
+                      accumulator + book.price * book['order-book'].quantity
+                    )
+                  }, 0)
+                  .toFixed(2)}
               </span>
             </h4>
             <hr />
