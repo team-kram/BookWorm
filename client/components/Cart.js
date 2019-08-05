@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {getCart} from '../store/order'
+import {getCart, deleteItem, updateItem} from '../store/order'
+
 const storage = window.localStorage
 class Cart extends Component {
   constructor() {
@@ -30,7 +31,9 @@ class Cart extends Component {
   }
   handleRemove = bookId => {
     if (this.props.isLoggedIn) {
-      console.log('put logic here')
+      this.props.deleteItem(bookId, this.state.id)
+      // this.setState(this.props.cart)
+      console.log(this.props)
     } else {
       const cart = JSON.parse(storage.getItem('cart'))
       cart.books = cart.books.filter(book => book.id !== bookId)
@@ -138,13 +141,16 @@ class Cart extends Component {
 }
 
 const mapStateToProps = state => ({
-  cart: state.orders.cart[0],
+  cart: state.orders.cart,
   userId: state.user.id
 })
 
 const mapDispatchToProps = dispatch => ({
   getCart: userId => {
     dispatch(getCart(userId))
+  },
+  deleteItem: (bookId, orderId) => {
+    dispatch(deleteItem(bookId, orderId))
   }
 })
 
