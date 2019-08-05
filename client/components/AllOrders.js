@@ -1,7 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getOrders} from '../store/order'
-import {getDeleteOrder} from '../store/order'
+import {getOrders, getDeleteOrder} from '../store/order'
 
 class AllOrders extends React.Component {
   constructor(props) {

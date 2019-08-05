@@ -1,9 +1,10 @@
 const router = require('express').Router()
 const {Order, Book, User, OrderBook} = require('../db/models')
-module.exports = router
+const {isAuthenticated, isAdmin} = require('./authentication')
+
 // 'api/orders/'
 // serve up orders for admin
-router.get('/', async (req, res, next) => {
+router.get('/', isAdmin, async (req, res, next) => {
   try {
     const orders = await Order.findAll({
       where: {
@@ -11,13 +12,14 @@ router.get('/', async (req, res, next) => {
       },
       include: [{model: User}, {model: Book, through: OrderBook}]
     })
+    console.log(req.user)
     res.send(orders)
   } catch (err) {
     next(err)
   }
 })
 
-router.get('/completed/:userId', async (req, res, next) => {
+router.get('/completed/:userId', isAuthenticated, async (req, res, next) => {
   try {
     const orders = await Order.findAll({
       where: {
@@ -33,7 +35,7 @@ router.get('/completed/:userId', async (req, res, next) => {
 })
 
 // serve up the order at req.params.id eager load order content + quantity
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', isAuthenticated, async (req, res, next) => {
   try {
     const cart = await Order.findOrCreate({
       where: {
@@ -51,7 +53,7 @@ router.get('/:id', async (req, res, next) => {
 })
 
 //buy a book
-router.put('/addToCart/:userId', async (req, res, next) => {
+router.put('/addToCart/:userId', isAuthenticated, async (req, res, next) => {
   // req.body : isbn, quantity { isbn, quantity}
   try {
     const book = await Book.findByPk(req.body.id)
@@ -75,7 +77,8 @@ router.put('/addToCart/:userId', async (req, res, next) => {
     next(err)
   }
 })
-router.post('/purchase/:userId', async (req, res, next) => {
+
+router.post('/purchase/:userId', isAuthenticated, async (req, res, next) => {
   try {
     const order = await Order.findOne({
       where: {
@@ -94,8 +97,8 @@ router.post('/purchase/:userId', async (req, res, next) => {
   }
 })
 
-// delete the order at req.params.id
-router.delete('/:id', async (req, res, next) => {
+// delete the order at req.params.id, protected
+router.delete('/:id', isAdmin, async (req, res, next) => {
   try {
     const id = await Order.findById(req.params.id)
     res.send(id)
