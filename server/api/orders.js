@@ -19,7 +19,7 @@ router.get('/', isAdmin, async (req, res, next) => {
   }
 })
 
-router.get('/completed/:userId', async (req, res, next) => {
+router.get('/completed/:userId', isAuthenticated, async (req, res, next) => {
   try {
     const orders = await Order.findAll({
       where: {
@@ -35,7 +35,7 @@ router.get('/completed/:userId', async (req, res, next) => {
 })
 
 // serve up the order at req.params.id eager load order content + quantity
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', isAuthenticated, async (req, res, next) => {
   try {
     const cart = await Order.findOrCreate({
       where: {
@@ -53,7 +53,7 @@ router.get('/:id', async (req, res, next) => {
 })
 
 //buy a book
-router.put('/addToCart/:userId', async (req, res, next) => {
+router.put('/addToCart/:userId', isAuthenticated, async (req, res, next) => {
   // req.body : isbn, quantity { isbn, quantity}
   try {
     const book = await Book.findByPk(req.body.id)
@@ -78,7 +78,7 @@ router.put('/addToCart/:userId', async (req, res, next) => {
   }
 })
 
-router.post('/purchase/:userId', async (req, res, next) => {
+router.post('/purchase/:userId', isAuthenticated, async (req, res, next) => {
   try {
     const order = await Order.findOne({
       where: {
