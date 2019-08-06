@@ -113,11 +113,11 @@ router.put('/editCart', async (req, res, next) => {
   try {
     const item = await OrderBook.findOne({
       where: {
-        bookId: req.body.bookId,
+        bookId: req.body.bookId, //destructure
         orderId: req.body.orderId
       }
     })
-    await item.update(req.body)
+    await item.update(req.body) //destructure req.body
     res.send(item)
   } catch (error) {
     next(error)
@@ -130,6 +130,21 @@ router.delete('/:id', isAdmin, async (req, res, next) => {
     res.send(id)
   } catch (err) {
     next(err)
+  }
+})
+
+router.put('/completed/:orderId', async (req, res, next) => {
+  try {
+    const order = await Order.findOne({
+      where: {
+        id: req.params.orderId
+      },
+      include: [{model: Book, through: OrderBook}]
+    })
+    await order.update({completed: true})
+    res.send(order)
+  } catch (error) {
+    next(error)
   }
 })
 
