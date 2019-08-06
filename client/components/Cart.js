@@ -55,9 +55,12 @@ class Cart extends Component {
     }
   }
 
+  changeLocal = cart => {
+    this.setState(cart)
+  }
+
   render() {
     const cart = this.state
-    console.log(cart)
     return Object.keys(cart).length ? (
       <div className="container">
         <h1>Cart</h1>
@@ -71,6 +74,8 @@ class Cart extends Component {
                   handleRemove={this.handleRemove}
                   updateItem={this.props.updateItem}
                   orderId={cart.id}
+                  isLoggedIn={this.props.isLoggedIn}
+                  changeLocal={this.changeLocal}
                 />
               ))}
             </ul>
@@ -95,7 +100,11 @@ class Cart extends Component {
             </h4>
             <hr />
 
-            <button type="button" className="btn btn-success w-100">
+            <button
+              type="button"
+              onClick={() => this.props.history.push('/checkout')}
+              className="btn btn-success w-100"
+            >
               Checkout
             </button>
             <button

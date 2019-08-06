@@ -9,6 +9,7 @@ import SingleBook from './components/SingleBook'
 import AllOrders from './components/AllOrders'
 import Orders from './components/Orders'
 import Cart from './components/Cart'
+import Checkout from './components/Checkout'
 
 /**
  * COMPONENT
@@ -49,8 +50,22 @@ class Routes extends Component {
                 <Cart isLoggedIn={isLoggedIn} {...navProps} />
               )}
             />
+            <Route
+              exact
+              path="/checkout"
+              render={navProps => (
+                <Checkout isLoggedIn={isLoggedIn} {...navProps} />
+              )}
+            />
           </Switch>
         )}
+        <Route
+          exact
+          path="/checkout"
+          render={navProps => (
+            <Checkout isLoggedIn={isLoggedIn} {...navProps} />
+          )}
+        />
         <Route
           exact
           path="/books/:bookId"
