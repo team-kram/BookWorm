@@ -6,10 +6,12 @@ const FOUND_BOOK = 'FOUND_BOOK'
 const UPDATED_BOOK = 'UPDATED_BOOK'
 
 // Action creators
-const gotBooks = books => ({
-  type: GOT_BOOKS,
-  books
-})
+const gotBooks = books => {
+  return {
+    type: GOT_BOOKS,
+    books
+  }
+}
 
 const deletedBook = book => ({
   type: DELETED_BOOK,

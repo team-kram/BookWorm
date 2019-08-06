@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {getBooks, deleteBook} from '../store/book'
+import {getBooks} from '../store/book'
 
 class AllBooks extends React.Component {
   componentDidMount() {
@@ -29,26 +29,14 @@ class AllBooks extends React.Component {
                   <p>{book.description}</p>
                   <h4 className="text-center">{stock} in stock</h4>
                   <h3 className="text-center">Price: ${price}</h3>
-                  <div className="row">
-                    <div className="col-6">
-                      <button
-                        onClick={() => this.selectBook(id)}
-                        type="button"
-                        className="btn btn-success ml-4 w-75"
-                      >
-                        Select Book
-                      </button>
-                    </div>
-                    <div className="col-6">
-                      <button
-                        onClick={() => this.props.deleteBook(book)}
-                        className="btn btn-danger ml-4 w-75"
-                        type="button"
-                      >
-                        Remove book
-                      </button>
-                    </div>
-                  </div>
+
+                  <button
+                    onClick={() => this.selectBook(id)}
+                    type="button"
+                    className="btn btn-success ml-4 w-75"
+                  >
+                    Select Book
+                  </button>
                 </div>
               </div>
             </li>
