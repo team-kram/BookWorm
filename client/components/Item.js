@@ -22,11 +22,24 @@ export default class Item extends Component {
   handleSubmit = event => {
     event.preventDefault()
     if (this.state.editMode) {
-      this.props.updateItem(
-        this.props.book.id,
-        this.props.orderId,
-        this.state.quantity
-      )
+      if (this.props.isLoggedIn) {
+        this.props.updateItem(
+          this.props.book.id,
+          this.props.orderId,
+          this.state.quantity
+        )
+      } else {
+        const storage = window.localStorage
+        const guestCart = JSON.parse(storage.getItem('cart'))
+        console.log(guestCart)
+        guestCart.books.forEach((book, idx) => {
+          if (book.id === this.props.book.id) {
+            guestCart.books[idx]['order-book'].quantity = this.state.quantity
+          }
+        })
+        storage.setItem('cart', JSON.stringify(guestCart))
+        this.props.changeLocal(guestCart)
+      }
     }
     this.toggleMode()
   }
