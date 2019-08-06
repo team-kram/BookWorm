@@ -29,14 +29,15 @@ class AllBooks extends React.Component {
                   <p>{book.description}</p>
                   <h4 className="text-center">{stock} in stock</h4>
                   <h3 className="text-center">Price: ${price}</h3>
-
-                  <button
-                    onClick={() => this.selectBook(id)}
-                    type="button"
-                    className="btn btn-success ml-4 w-100"
-                  >
-                    Select Book
-                  </button>
+                  <div className="container">
+                    <button
+                      onClick={() => this.selectBook(id)}
+                      type="button"
+                      className="btn btn-success w-100"
+                    >
+                      Select Book
+                    </button>
+                  </div>
                 </div>
               </div>
             </li>
