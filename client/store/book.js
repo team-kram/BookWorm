@@ -91,8 +91,7 @@ const booksReducer = (state = {currentBookId: null}, action) => {
       let isbn = action.book.isbn
       return {...state, [isbn]: action.book, currentBookId: isbn}
     case UPDATED_BOOK:
-      isbn = action.book.isbn
-      return {...state, [isbn]: action.book, currentBookId: isbn}
+      return action.book
     default:
       return state
   }
