@@ -39,7 +39,7 @@ class Orders extends Component {
         ))}
       </div>
     ) : (
-      <h1>Loading...</h1>
+      <h1>Loading...</h1> //no completed orers
     )
   }
 }

@@ -9,6 +9,7 @@ const GOT_COMPLETED = 'GOT_COMPLETED'
 const UPDATED_CART = 'UPDATED_CART'
 const UPDATED_ITEM = 'UPDATED_ITEM'
 const DELETED_ITEM = 'DELETED_ITEM'
+const CHECKED_OUT = 'CHECKED_OUT'
 
 const defaultOrder = {}
 
@@ -49,6 +50,12 @@ const deletedItem = item => ({
   type: DELETED_ITEM,
   item
 })
+
+const checkedOut = order => ({
+  type: CHECKED_OUT,
+  order
+})
+
 export const getOrders = () => async dispatch => {
   try {
     let {data: orders} = await axios.get('/api/orders')
@@ -106,9 +113,13 @@ export const updateItem = (bookId, orderId, quantity) => async dispatch => {
 
 export const deleteItem = (bookId, orderId) => async dispatch => {
   const body = {bookId, orderId}
-  console.log(body)
   await axios.delete(`/api/orders/removeCart`, {data: body})
   dispatch(deletedItem(body))
+}
+
+export const checkout = orderId => async dispatch => {
+  const {data: updatedCart} = await axios.put(`/api/orders/checkout/${orderId}`)
+  dispatch(checkedOut(updatedCart))
 }
 
 // state = {completedOrders: {orders where completed is true, id has to match userId}, cart: {order where completed is false}}
@@ -124,7 +135,7 @@ export default (state = {completedOrders: [], cart: {}}, action) => {
     case GOT_COMPLETED:
       return {...state, completedOrders: action.completed}
     case UPDATED_CART:
-      const cartCopy = {...state.cart}
+      const cartCopy = {...state.cart} //could declare above switch
       cartCopy.books = action.cart
       return {...state, cart: cartCopy}
     case UPDATED_ITEM:
@@ -142,6 +153,11 @@ export default (state = {completedOrders: [], cart: {}}, action) => {
         book => book.id !== action.item.bookId
       )
       return {...state, cart: copyCart}
+    case CHECKED_OUT:
+      const copyState = {...state, cart: {}}
+      copyState.completedOrders.push(action.order)
+      return copyState
+
     default:
       return {...state}
   }
