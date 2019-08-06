@@ -104,11 +104,8 @@ class Cart extends Component {
               onClick={() => this.props.history.push('/checkout')}
               className="btn btn-success w-100"
             >
-            {/* <StripeCheckout stripeKey="pk_test_hNgdH0fbZayRf2mTwFlW5nH300ksPDl1YQ" />
-            <StripeCheckout />
-            {/* <button type="button" className="btn btn-success w-100">
               Checkout
-            </button> */} */}
+            </button>
             <button
               type="button"
               onClick={() => this.props.history.push('/books')}
