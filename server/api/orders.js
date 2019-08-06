@@ -53,8 +53,8 @@ router.get('/:userId', isAuthenticated, async (req, res, next) => {
 
 //buy a book
 router.put('/addToCart/:userId', isAuthenticated, async (req, res, next) => {
-  // req.body : isbn, quantity { isbn, quantity}
   try {
+    const {quantity} = req.body
     const book = await Book.findByPk(req.body.id)
     let order = await Order.findOne({
       where: {
@@ -68,7 +68,7 @@ router.put('/addToCart/:userId', isAuthenticated, async (req, res, next) => {
       })
     }
     await order.addBook(book, {
-      through: {quantity: parseInt(req.body.quantity)}
+      through: {quantity: parseInt(quantity)}
     })
     let books = await order.getBooks()
     res.send(books)
@@ -100,8 +100,9 @@ router.post('/purchase/:userId', isAuthenticated, async (req, res, next) => {
 
 router.delete('/removeCart', isAuthenticated, async (req, res, next) => {
   try {
-    const book = await Book.findByPk(req.body.bookId)
-    const order = await Order.findByPk(req.body.orderId)
+    const {bookId, orderId} = req.body
+    const book = await Book.findByPk(bookId)
+    const order = await Order.findByPk(orderId)
     await order.removeBook(book)
     res.sendStatus(201)
   } catch (error) {
@@ -111,13 +112,17 @@ router.delete('/removeCart', isAuthenticated, async (req, res, next) => {
 
 router.put('/editCart', isAuthenticated, async (req, res, next) => {
   try {
+    const {bookId, orderId} = req.body
     const item = await OrderBook.findOne({
       where: {
-        bookId: req.body.bookId, //destructure
-        orderId: req.body.orderId
+        bookId,
+        orderId
       }
     })
-    await item.update(req.body) //destructure req.body
+    const body = {
+      quantity: req.body.quantity
+    }
+    await item.update(body)
     res.send(item)
   } catch (error) {
     next(error)

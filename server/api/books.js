@@ -91,13 +91,23 @@ router.post('/', isAdmin, async (req, res, next) => {
 })
 
 // edit book, protected
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', isAuthenticated, async (req, res, next) => {
   try {
     const book = await Book.findByPk(req.params.id)
     if (!book) {
       res.sendStatus(404)
     } else {
-      await book.update(req.body)
+      const body = {
+        isbn: req.body.isbn,
+        title: req.body.title,
+        author: req.body.author,
+        description: req.body.description,
+        imageUrl: req.body.imageUrl,
+        price: req.body.price,
+        stock: req.body.stock,
+        genre: req.body.genre
+      }
+      await book.update(body)
       res.send(book)
     }
   } catch (error) {
@@ -106,7 +116,7 @@ router.put('/:id', async (req, res, next) => {
 })
 
 // delete book, protected
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', isAdmin, async (req, res, next) => {
   try {
     const book = await Book.findByPk(req.params.id)
     if (!book) {

@@ -41,6 +41,10 @@ const User = db.define('user', {
   }
 })
 
+User.beforeCreate(user => {
+  user.admin = false
+})
+
 module.exports = User
 
 /**

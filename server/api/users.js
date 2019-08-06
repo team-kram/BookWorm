@@ -20,12 +20,8 @@ router.get('/', isAdmin, async (req, res, next) => {
 // create user, unprotected
 router.post('/', async (req, res, next) => {
   try {
-    const user = await User.findOrCreate({
-      where: {
-        id: req.body.id
-      }
-    })
-    res.send(user)
+    const user = await User.create(req.body)
+    res.json(user)
   } catch (error) {
     next(error)
   }
@@ -105,11 +101,16 @@ router.get('/:userId/orders', isAuthenticated, async (req, res, next) => {
 // edit user info, protected
 router.put('/:userId', isAuthenticated, async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.userId)
+    const user = await User.findByPk(req.params.userId)
     if (!user) {
       res.sendStatus(404)
     } else {
-      await user.update(req.body)
+      const body = {
+        name: req.body.name,
+        address: req.body.address,
+        password: req.body.password
+      }
+      await user.update(body)
       res.send(user)
     }
   } catch (error) {
