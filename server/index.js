@@ -10,7 +10,7 @@ const sessionStore = new SequelizeStore({db})
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
-module.exports = app
+// const cors = require('cors')
 
 // This is a global Mocha hook, used for resource cleanup.
 // Otherwise, Mocha v4+ never quits after tests.
@@ -39,6 +39,22 @@ passport.deserializeUser(async (id, done) => {
     done(err)
   }
 })
+
+// Stripe
+// const CORS_WHITELIST = require('./constants/frontend')
+
+// const corsOptions = {
+//   origin: (origin, callback) =>
+//     CORS_WHITELIST.indexOf(origin) !== -1
+//       ? callback(null, true)
+//       : callback(new Error('Not allowed by CORS'))
+// }
+
+// const configureServer = app => {
+//   app.use(cors(corsOptions))
+
+//   app.use(express.json())
+// }
 
 const createApp = () => {
   // logging middleware
@@ -122,3 +138,5 @@ if (require.main === module) {
 } else {
   createApp()
 }
+
+module.exports = app
