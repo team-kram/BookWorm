@@ -147,5 +147,23 @@ router.put('/completed/:orderId', async (req, res, next) => {
     next(error)
   }
 })
+router.post('/:userId', async (req, res, next) => {
+  try {
+    const cart = await Order.findOne({
+      where: {
+        completed: false,
+        userId: req.params.userId
+      }
+    })
+    if (!cart) {
+      await Order.create({completed: false})
+      res.sendStatus(201)
+    } else {
+      res.send('Cart already exists')
+    }
+  } catch (error) {
+    next(error)
+  }
+})
 
 module.exports = router
