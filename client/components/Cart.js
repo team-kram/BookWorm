@@ -61,6 +61,7 @@ class Cart extends Component {
 
   render() {
     const cart = this.state
+    console.log(cart)
     return Object.keys(cart).length ? (
       <div className="container">
         <h1>Cart</h1>

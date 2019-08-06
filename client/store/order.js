@@ -117,8 +117,11 @@ export const deleteItem = (bookId, orderId) => async dispatch => {
   dispatch(deletedItem(body))
 }
 
-export const checkout = orderId => async dispatch => {
-  const {data: updatedCart} = await axios.put(`/api/orders/checkout/${orderId}`)
+export const checkout = (orderId, userId) => async dispatch => {
+  const {data: updatedCart} = await axios.put(
+    `/api/orders/completed/${orderId}`
+  )
+  await axios.post(`/api/orders/${userId}`)
   dispatch(checkedOut(updatedCart))
 }
 
@@ -154,7 +157,7 @@ export default (state = {completedOrders: [], cart: {}}, action) => {
       )
       return {...state, cart: copyCart}
     case CHECKED_OUT:
-      const copyState = {...state, cart: {}}
+      const copyState = {...state, cart: {books: []}}
       copyState.completedOrders.push(action.order)
       return copyState
 

@@ -6,8 +6,8 @@ class Orders extends Component {
   componentDidMount() {
     this.props.getCompletedOrders(this.props.userId)
   }
+
   render() {
-    console.log(this.props)
     return this.props.completedOrders ? (
       <div className="container">
         {this.props.completedOrders.map(order => (

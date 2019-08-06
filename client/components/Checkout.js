@@ -41,7 +41,7 @@ class Checkout extends Component {
     const cart = JSON.parse(storage.getItem('cart'))
     if (this.state.cart.books.length || cart.books.length) {
       if (this.props.isLoggedIn) {
-        this.props.checkout(this.state.cart.id)
+        this.props.checkout(this.state.cart.id, this.props.user.id)
       } else {
         let completedOrders = JSON.parse(storage.getItem('completedOrders'))
         cart.completed = true
@@ -206,7 +206,7 @@ class Checkout extends Component {
         </div>
       </div>
     ) : (
-      <h1 className="text-center">Loading...</h1>
+      <h1 className="text-center">Thank you for your order!</h1>
     )
   }
 }
@@ -220,8 +220,8 @@ const mapDispatchToProps = dispatch => {
     getCart: userId => {
       dispatch(getCart(userId))
     },
-    checkout: orderId => {
-      dispatch(checkout(orderId))
+    checkout: (orderId, userId) => {
+      dispatch(checkout(orderId, userId))
     }
   }
 }
