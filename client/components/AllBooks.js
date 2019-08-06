@@ -33,7 +33,7 @@ class AllBooks extends React.Component {
                   <button
                     onClick={() => this.selectBook(id)}
                     type="button"
-                    className="btn btn-success ml-4 w-"
+                    className="btn btn-success ml-4 w-100"
                   >
                     Select Book
                   </button>
