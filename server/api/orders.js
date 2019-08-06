@@ -98,7 +98,7 @@ router.post('/purchase/:userId', isAuthenticated, async (req, res, next) => {
 
 // delete the order at req.params.id, protected
 
-router.delete('/removeCart', async (req, res, next) => {
+router.delete('/removeCart', isAuthenticated, async (req, res, next) => {
   try {
     const book = await Book.findByPk(req.body.bookId)
     const order = await Order.findByPk(req.body.orderId)
@@ -109,7 +109,7 @@ router.delete('/removeCart', async (req, res, next) => {
   }
 })
 
-router.put('/editCart', async (req, res, next) => {
+router.put('/editCart', isAuthenticated, async (req, res, next) => {
   try {
     const item = await OrderBook.findOne({
       where: {

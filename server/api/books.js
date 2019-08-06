@@ -91,7 +91,7 @@ router.post('/', isAdmin, async (req, res, next) => {
 })
 
 // edit book, protected
-router.put('/:id', isAdmin, async (req, res, next) => {
+router.put('/:id', async (req, res, next) => {
   try {
     const book = await Book.findByPk(req.params.id)
     if (!book) {
@@ -106,7 +106,7 @@ router.put('/:id', isAdmin, async (req, res, next) => {
 })
 
 // delete book, protected
-router.delete('/:id', isAdmin, async (req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
   try {
     const book = await Book.findByPk(req.params.id)
     if (!book) {
