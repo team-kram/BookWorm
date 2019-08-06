@@ -126,7 +126,7 @@ export const checkout = (orderId, userId) => async dispatch => {
 }
 
 // state = {completedOrders: {orders where completed is true, id has to match userId}, cart: {order where completed is false}}
-export default (state = {completedOrders: [], cart: {}}, action) => {
+export default (state = {completedOrders: [], cart: {books: []}}, action) => {
   switch (action.type) {
     case GOT_ORDER:
       return {...state, completedOrders: action.order}
