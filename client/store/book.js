@@ -12,13 +12,6 @@ const gotBooks = books => {
   }
 }
 
-// const deletedBook = book => {
-//   return {
-//     type: DELETED_BOOK,
-//     book
-//   }
-// }
-
 const deletedBook = book => ({
   type: DELETED_BOOK,
   book
