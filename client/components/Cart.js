@@ -105,6 +105,7 @@ class Cart extends Component {
               className="btn btn-success w-100"
             >
             {/* <StripeCheckout stripeKey="pk_test_hNgdH0fbZayRf2mTwFlW5nH300ksPDl1YQ" />
+            <StripeCheckout />
             {/* <button type="button" className="btn btn-success w-100">
               Checkout
             </button> */} */}
