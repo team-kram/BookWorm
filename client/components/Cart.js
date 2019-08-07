@@ -26,15 +26,13 @@ class Cart extends Component {
     }
   }
   componentWillReceiveProps(props) {
-    if (props.cart) {
+    if (Array.isArray(props.cart.books)) {
       this.setState(props.cart)
     }
   }
   handleRemove = bookId => {
     if (this.props.isLoggedIn) {
       this.props.deleteItem(bookId, this.state.id)
-      // this.setState(this.props.cart)
-      console.log(this.props)
     } else {
       const cart = JSON.parse(storage.getItem('cart'))
       cart.books = cart.books.filter(book => book.id !== bookId)
@@ -61,7 +59,6 @@ class Cart extends Component {
 
   render() {
     const cart = this.state
-    console.log(cart)
     return Object.keys(cart).length ? (
       <div className="container">
         <h1>Cart</h1>
