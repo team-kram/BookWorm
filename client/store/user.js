@@ -4,9 +4,11 @@ import history from '../history'
 /**
  * ACTION TYPES
  */
-const GET_USER = 'GET_USER'
+const GOT_ALL_USERS = 'GOT_ALL_USERS'
+const GOT_USER = 'GOT_USER'
 const REMOVE_USER = 'REMOVE_USER'
 const CREATE_USER = 'CREATE_USER'
+const DELETED_USER = 'DELETED_USER'
 
 /**
  * INITIAL STATE
@@ -16,9 +18,11 @@ const defaultUser = {}
 /**
  * ACTION CREATORS
  */
-const getUser = user => ({type: GET_USER, user})
+const gotAllUsers = users => ({type: GOT_ALL_USERS, users})
+const gotUser = user => ({type: GOT_USER, user})
 const removeUser = () => ({type: REMOVE_USER})
 const createUser = user => ({type: CREATE_USER, user})
+const deletedUser = user => ({type: DELETED_USER, user})
 
 /**
  * THUNK CREATORS
@@ -26,7 +30,7 @@ const createUser = user => ({type: CREATE_USER, user})
 export const me = () => async dispatch => {
   try {
     const res = await axios.get('/auth/me')
-    dispatch(getUser(res.data || defaultUser))
+    dispatch(gotUser(res.data || defaultUser))
   } catch (err) {
     console.error(err)
   }
@@ -36,15 +40,10 @@ export const auth = (email, password, method) => async dispatch => {
   let res
   try {
     res = await axios.post(`/auth/${method}`, {email, password})
+    dispatch(gotUser(res.data))
+    res.data.admin ? history.push('/admin') : history.push('/books')
   } catch (authError) {
-    return dispatch(getUser({error: authError}))
-  }
-
-  try {
-    dispatch(getUser(res.data))
-    history.push('/home')
-  } catch (dispatchOrHistoryErr) {
-    console.error(dispatchOrHistoryErr)
+    return dispatch(gotUser({error: authError}))
   }
 }
 
@@ -78,17 +77,39 @@ export const addUser = (
   }
 }
 
+export const getAllUsers = () => async dispatch => {
+  try {
+    const {data: users} = await axios.get('/api/users')
+    dispatch(gotAllUsers(users))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+export const deleteUser = user => async dispatch => {
+  try {
+    await axios.delete(`/api/users/${user}`)
+    dispatch(deletedUser(user))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 /**
  * REDUCER
  */
 export default function(state = defaultUser, action) {
   switch (action.type) {
-    case GET_USER:
+    case GOT_ALL_USERS:
+      return {...state.users, users: action.users}
+    case GOT_USER:
       return action.user
     case REMOVE_USER:
       return defaultUser
     case CREATE_USER:
       return action.user
+    case DELETED_USER:
+      return defaultUser
     default:
       return state
   }

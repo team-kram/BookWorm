@@ -50,8 +50,8 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-// get order by book's id, unprotected
-router.get('/:id/orders', async (req, res, next) => {
+// get order by book's id
+router.get('/:id/orders', isAuthenticated, async (req, res, next) => {
   try {
     const book = await Book.findOne({
       where: {

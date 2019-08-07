@@ -66,35 +66,44 @@ class EditBook extends Component {
             <h4>Edit Book:</h4>
             <label>
               Title:
-              <input type="text" name="title" />
+              <input type="text" name="title" defaultValue={title} />
             </label>
             <label>
               Author:
-              <input type="text" name="author" />
+              <input type="text" name="author" defaultValue={author} />
             </label>
             <label>
               Genre:
-              <input type="text" name="genre" />
+              <input type="text" name="genre" defaultValue={genre} />
             </label>
             <label>
               Description:
-              <textarea type="text" name="description" />
+              <textarea
+                type="text"
+                name="description"
+                defaultValue={description}
+              />
             </label>
             <label>
               ImageUrl:
-              <input type="text" name="imageUrl" />
+              <input type="text" name="imageUrl" defaultValue={imageUrl} />
             </label>
             <label>
               ISBN:
-              <input type="text" name="isbn" />
+              <input type="text" name="isbn" defaultValue={isbn} />
             </label>
             <label>
               Stock:
-              <input type="number" name="stock" />
+              <input type="number" name="stock" defaultValue={stock} />
             </label>
             <label>
               Price:
-              <input type="number" name="price" />
+              <input
+                type="text"
+                name="price"
+                pattern="\d+(\.\d{2})?"
+                defaultValue={price}
+              />
             </label>
             <button type="submit">Update</button>
           </form>

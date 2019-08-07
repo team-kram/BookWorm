@@ -20,7 +20,13 @@ router.get('/', isAdmin, async (req, res, next) => {
 // create user, unprotected
 router.post('/', async (req, res, next) => {
   try {
-    const user = await User.create(req.body)
+    const body = {
+      name: req.body.name,
+      address: req.body.address,
+      email: req.body.email,
+      password: req.body.password
+    }
+    const user = await User.create(body)
     res.json(user)
   } catch (error) {
     next(error)

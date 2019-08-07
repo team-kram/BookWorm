@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {Link, NavLink} from 'react-router-dom'
 import {logout} from '../store'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
+const Navbar = ({handleClick, isLoggedIn, isAdmin}) => (
   <nav className="navbar navbar-nav navbar-expand fixed-top">
     <div className="order-0 ml-3">
       <Link to="/" className="navbar-brand mx-auto">
@@ -12,35 +12,69 @@ const Navbar = ({handleClick, isLoggedIn}) => (
       </Link>
     </div>
     {isLoggedIn ? (
-      <ul className="ml-auto navbar-nav">
-        {/* The navbar will show these links after you log in */}
-        <li className="nav-item">
-          <Link to="/home">Home</Link>
-        </li>
-        <li className="nav-item">
-          <NavLink activeClassName="active-link" to="/books">
-            Show inventory
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink activeClassName="active-link" to="/completed-orders">
-            Orders
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink activeClassName="active-link" to="/cart">
-            Cart
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <a href="#" onClick={handleClick}>
-            Logout
-          </a>
-        </li>
-      </ul>
+      isAdmin ? (
+        <ul className="ml-auto navbar-nav">
+          {/* The navbar will show these links after you log in */}
+          <li className="nav-item">
+            <NavLink activeClassName="active-link" to="/admin">
+              Admin
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <Link to="/home">Home</Link>
+          </li>
+          <li className="nav-item">
+            <NavLink activeClassName="active-link" to="/books">
+              Show inventory
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink activeClassName="active-link" to="/completed-orders">
+              Orders
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink activeClassName="active-link" to="/cart">
+              Cart
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <a href="#" onClick={handleClick}>
+              Logout
+            </a>
+          </li>
+        </ul>
+      ) : (
+        <ul className="ml-auto navbar-nav">
+          {/* The navbar will show these links after you log in */}
+          <li className="nav-item">
+            <Link to="/home">Home</Link>
+          </li>
+          <li className="nav-item">
+            <NavLink activeClassName="active-link" to="/books">
+              Show inventory
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink activeClassName="active-link" to="/completed-orders">
+              Orders
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink activeClassName="active-link" to="/cart">
+              Cart
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <a href="#" onClick={handleClick}>
+              Logout
+            </a>
+          </li>
+        </ul>
+      )
     ) : (
       <ul className="ml-auto navbar-nav">
-        {/* The navbar will show these links before you log in */}
+        {/* The navbar will show these links after you log in */}
         <li className="nav-item">
           <NavLink activeClassName="active-link" to="/books">
             Show inventory
@@ -61,11 +95,6 @@ const Navbar = ({handleClick, isLoggedIn}) => (
             Sign Up
           </NavLink>
         </li>
-        {/* <li className="nav-item">
-          <NavLink activeClassName="active-link" to="/orders">
-            Orders
-          </NavLink>
-        </li> */}
       </ul>
     )}
   </nav>
@@ -76,7 +105,8 @@ const Navbar = ({handleClick, isLoggedIn}) => (
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    isAdmin: !!state.user.admin
   }
 }
 

@@ -37,6 +37,7 @@ class Routes extends Component {
         <Route exact path="/admin/users" component={AdminUsers} />
         <Route exact path="/admin/books" component={AdminBooks} />
         <Route exact path="/admin/books/edit/:bookId" component={EditBook} />
+        {/* <Route exact path="/admin/books/edit/:userId" component={EditUser} /> */}
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}

@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getCart, deleteItem, updateItem} from '../store/order'
 import Item from './Item'
-import StripeCheckout from './StripeCheckout'
 
 const storage = window.localStorage
 class Cart extends Component {

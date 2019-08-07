@@ -31,7 +31,6 @@ export default class Item extends Component {
       } else {
         const storage = window.localStorage
         const guestCart = JSON.parse(storage.getItem('cart'))
-        console.log(guestCart)
         guestCart.books.forEach((book, idx) => {
           if (book.id === this.props.book.id) {
             guestCart.books[idx]['order-book'].quantity = this.state.quantity

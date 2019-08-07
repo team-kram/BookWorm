@@ -21,7 +21,7 @@ class AdminBooks extends React.Component {
           let {title, isbn, stock, price, id, genre} = book
           return (
             <React.Fragment>
-              <tr key={book.id}>
+              <tr key={id}>
                 <td>{id}</td>
                 <td>{title}</td>
                 <td>{genre}</td>

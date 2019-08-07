@@ -64,7 +64,6 @@ class Checkout extends Component {
     const shipping = {...this.state.shipping}
     shipping[e.target.name] = e.target.value
     this.setState({shipping})
-    console.log(this.state.shipping)
   }
   render() {
     const order = this.state.cart
