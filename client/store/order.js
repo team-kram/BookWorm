@@ -133,7 +133,7 @@ export default (state = {completedOrders: [], cart: {}}, action) => {
     case REMOVE_ORDER:
       return {...state, completedOrders: action.order}
     case GOT_CART:
-      const oldCart = action.cart[0]
+      const oldCart = action.cart
       return {...state, cart: oldCart}
     case GOT_COMPLETED:
       return {...state, completedOrders: action.completed}

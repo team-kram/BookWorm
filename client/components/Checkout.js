@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {getCart, checkout} from '../store/order'
-import {combineReducers} from 'redux'
+import CheckoutForm from './CheckoutForm'
+import {Elements, StripeProvider} from 'react-stripe-elements'
 const storage = window.localStorage
 
 class Checkout extends Component {
@@ -11,7 +12,8 @@ class Checkout extends Component {
       cart: {},
       shipping: {name: '', email: '', address: '', zipcode: ''},
       successHidden: true,
-      failHidden: true
+      failHidden: true,
+      submitDisabled: true
     }
   }
 
@@ -54,7 +56,9 @@ class Checkout extends Component {
         storage.setItem('cart', JSON.stringify({completed: false, books: []}))
       }
       this.setState({successHidden: false})
-      setTimeout(() => this.setState({successHidden: true}), 3000)
+      setTimeout(() => {
+        this.setState({successHidden: true, submitDisabled: true})
+      }, 3000)
     } else {
       this.setState({failHidden: false})
       setTimeout(() => this.setState({failHidden: true}), 3000)
@@ -65,145 +69,160 @@ class Checkout extends Component {
     shipping[e.target.name] = e.target.value
     this.setState({shipping})
   }
+  confirm = () => {
+    this.setState({submitDisabled: false})
+  }
   render() {
     const order = this.state.cart
     return Object.keys(order).length ? (
-      <div className="container">
-        <div className="row">
-          <div className="col-7">
-            <h3>Shipping Information</h3>
-            <form className="card my-3 p-4">
-              <div className="form-group">
-                <label htmlFor="name">
-                  Name <span className="text-danger">*</span>{' '}
-                </label>
-                <input
-                  className="form-control"
-                  onChange={this.handleChange}
-                  value={this.state.shipping.name}
-                  type="text"
-                  name="name"
-                  id="name"
-                  required
-                />
+      <StripeProvider apiKey="pk_test_JLN05JZh6qQyeGXLAhu4IXZR00mH0xeQlm">
+        <div className="container">
+          <div className="row">
+            <div className="col-7">
+              <h3>Shipping Information</h3>
+              <form className="card my-3 p-4">
+                <div className="form-group">
+                  <label htmlFor="name">
+                    Name <span className="text-danger">*</span>{' '}
+                  </label>
+                  <input
+                    className="form-control"
+                    onChange={this.handleChange}
+                    value={this.state.shipping.name}
+                    type="text"
+                    name="name"
+                    id="name"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="address">
+                    Address <span className="text-danger">*</span>{' '}
+                  </label>
+                  <input
+                    className="form-control"
+                    onChange={this.handleChange}
+                    value={this.state.shipping.address}
+                    type="text"
+                    name="address"
+                    id="address"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email">
+                    Email Address <span className="text-danger">*</span>{' '}
+                  </label>
+                  <input
+                    className="form-control"
+                    onChange={this.handleChange}
+                    value={this.state.shipping.email}
+                    type="email"
+                    name="email"
+                    id="email"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email">
+                    Zip Code <span className="text-danger">*</span>{' '}
+                  </label>
+                  <input
+                    className="form-control"
+                    onChange={this.handleChange}
+                    value={this.state.shipping.zipcode}
+                    type="text"
+                    name="zipcode"
+                    id="zipcode"
+                    required
+                  />
+                </div>
+              </form>
+              <h3>Payment Information</h3>
+              <div className="card mt-4 p-4">
+                <Elements>
+                  <CheckoutForm confirm={this.confirm} />
+                </Elements>
               </div>
-              <div className="form-group">
-                <label htmlFor="address">
-                  Address <span className="text-danger">*</span>{' '}
-                </label>
-                <input
-                  className="form-control"
-                  onChange={this.handleChange}
-                  value={this.state.shipping.address}
-                  type="text"
-                  name="address"
-                  id="address"
-                  required
-                />
+            </div>
+            <div className="col-5">
+              <h3>Your Order</h3>
+              <ul className="card my-3 p-4">
+                <div className="row">
+                  <div className="col-8">
+                    <strong>Product</strong>
+                  </div>
+                  <div className="col-4">
+                    <strong>Price</strong>
+                  </div>
+                </div>
+                <hr />
+                {order.books.map(book => (
+                  <li className="mb-2" key={book.id}>
+                    <div className="row">
+                      <div className="col-8">
+                        <p>
+                          {book.title}{' '}
+                          <small className="text-muted">{book.isbn}</small> x{' '}
+                          <strong>{book['order-book'].quantity}</strong>
+                        </p>
+                      </div>
+                      <div className="col-4">
+                        <p>
+                          $
+                          {(book.price * book['order-book'].quantity).toFixed(
+                            2
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+                <div className="row">
+                  <div className="col-8">
+                    <h3>Total</h3>
+                  </div>
+                  <div className="col-4">
+                    <h3>
+                      $
+                      {order.books
+                        .reduce(
+                          (accumulator, book) =>
+                            accumulator +
+                            book.price * parseInt(book['order-book'].quantity),
+                          0
+                        )
+                        .toFixed(2)}
+                    </h3>
+                  </div>
+                </div>
+              </ul>
+              <button
+                onClick={this.handleSubmit}
+                type="button"
+                className="btn btn-success w-100"
+                disabled={this.state.submitDisabled}
+              >
+                Place Order
+              </button>
+              <div
+                className="alert alert-success mt-2"
+                hidden={this.state.successHidden}
+              >
+                {' '}
+                Order successfully placed! Thank you!{' '}
               </div>
-              <div className="form-group">
-                <label htmlFor="email">
-                  Email Address <span className="text-danger">*</span>{' '}
-                </label>
-                <input
-                  className="form-control"
-                  onChange={this.handleChange}
-                  value={this.state.shipping.email}
-                  type="email"
-                  name="email"
-                  id="email"
-                  required
-                />
+              <div
+                className="alert alert-danger mt-2"
+                hidden={this.state.failHidden}
+              >
+                {' '}
+                Error. Your cart is empty!{' '}
               </div>
-              <div className="form-group">
-                <label htmlFor="email">
-                  Zip Code <span className="text-danger">*</span>{' '}
-                </label>
-                <input
-                  className="form-control"
-                  onChange={this.handleChange}
-                  value={this.state.shipping.zipcode}
-                  type="text"
-                  name="zipcode"
-                  id="zipcode"
-                  required
-                />
-              </div>
-            </form>
-            <h3>Payment Information</h3>
-            <div className="card mt-4 p-4">
-              <h1>Stripe</h1>
             </div>
           </div>
-          <div className="col-5">
-            <h3>Your Order</h3>
-            <ul className="card my-3 p-4">
-              <div className="row">
-                <div className="col-8">
-                  <strong>Product</strong>
-                </div>
-                <div className="col-4">
-                  <strong>Price</strong>
-                </div>
-              </div>
-              <hr />
-              {order.books.map(book => (
-                <li className="mb-2" key={book.id}>
-                  <div className="row">
-                    <div className="col-8">
-                      <p>
-                        {book.title}{' '}
-                        <small className="text-muted">{book.isbn}</small> x{' '}
-                        <strong>{book['order-book'].quantity}</strong>
-                      </p>
-                    </div>
-                    <div className="col-4">
-                      <p>
-                        ${(book.price * book['order-book'].quantity).toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-                </li>
-              ))}
-              <div className="row">
-                <div className="col-8">
-                  <h3>Total</h3>
-                </div>
-                <div className="col-4">
-                  <h3>
-                    ${order.books
-                      .reduce(
-                        (accumulator, book) =>
-                          accumulator +
-                          book.price * parseInt(book['order-book'].quantity),
-                        0
-                      )
-                      .toFixed(2)}
-                  </h3>
-                </div>
-              </div>
-            </ul>
-            <button
-              onClick={this.handleSubmit}
-              type="button"
-              className="btn btn-success w-100"
-            >
-              Place Order
-            </button>
-          </div>
         </div>
-        <div
-          className="alert alert-success mt-2"
-          hidden={this.state.successHidden}
-        >
-          {' '}
-          Order successfully placed! Thank you!{' '}
-        </div>
-        <div className="alert alert-danger mt-2" hidden={this.state.failHidden}>
-          {' '}
-          Error. Your cart is empty!{' '}
-        </div>
-      </div>
+      </StripeProvider>
     ) : (
       <h1 className="text-center">Thank you for your order!</h1>
     )

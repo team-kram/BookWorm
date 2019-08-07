@@ -26,7 +26,7 @@ class Cart extends Component {
     }
   }
   componentWillReceiveProps(props) {
-    if (props.cart) {
+    if (Array.isArray(props.cart.books)) {
       this.setState(props.cart)
     }
   }
