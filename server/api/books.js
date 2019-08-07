@@ -50,8 +50,8 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-// get order by book's id, unprotected
-router.get('/:id/orders', async (req, res, next) => {
+// get order by book's id
+router.get('/:id/orders', isAuthenticated, async (req, res, next) => {
   try {
     const book = await Book.findOne({
       where: {
@@ -91,13 +91,23 @@ router.post('/', isAdmin, async (req, res, next) => {
 })
 
 // edit book, protected
-router.put('/:id', isAdmin, async (req, res, next) => {
+router.put('/:id', isAuthenticated, async (req, res, next) => {
   try {
     const book = await Book.findByPk(req.params.id)
     if (!book) {
       res.sendStatus(404)
     } else {
-      await book.update(req.body)
+      const body = {
+        isbn: req.body.isbn,
+        title: req.body.title,
+        author: req.body.author,
+        description: req.body.description,
+        imageUrl: req.body.imageUrl,
+        price: req.body.price,
+        stock: req.body.stock,
+        genre: req.body.genre
+      }
+      await book.update(body)
       res.send(book)
     }
   } catch (error) {

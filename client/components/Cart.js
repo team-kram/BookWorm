@@ -42,7 +42,7 @@ class Cart extends Component {
   }
   handleRemoveAll = () => {
     if (this.props.isLoggedIn) {
-      console.log('put logic here')
+      console.log('do something')
     } else {
       const cart = {
         completed: false,

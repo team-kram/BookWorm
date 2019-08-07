@@ -169,7 +169,8 @@ class Checkout extends Component {
                       </div>
                       <div className="col-4">
                         <p>
-                          ${(book.price * book['order-book'].quantity).toFixed(
+                          $
+                          {(book.price * book['order-book'].quantity).toFixed(
                             2
                           )}
                         </p>
@@ -183,7 +184,8 @@ class Checkout extends Component {
                   </div>
                   <div className="col-4">
                     <h3>
-                      ${order.books
+                      $
+                      {order.books
                         .reduce(
                           (accumulator, book) =>
                             accumulator +

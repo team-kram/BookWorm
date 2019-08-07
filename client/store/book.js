@@ -3,6 +3,7 @@ import axios from 'axios'
 const GOT_BOOKS = 'GOT_BOOKS'
 const DELETED_BOOK = 'DELETED_BOOK'
 const FOUND_BOOK = 'FOUND_BOOK'
+const UPDATED_BOOK = 'UPDATED_BOOK'
 
 // Action creators
 const gotBooks = books => {
@@ -19,6 +20,11 @@ const deletedBook = book => ({
 
 const foundBook = book => ({
   type: FOUND_BOOK,
+  book
+})
+
+const updatedBook = book => ({
+  type: UPDATED_BOOK,
   book
 })
 
@@ -54,6 +60,25 @@ export const findBook = id => async dispatch => {
   }
 }
 
+export const updateBook = book => async dispatch => {
+  try {
+    const bookObj = {
+      title: book.title,
+      author: book.author,
+      description: book.description,
+      imageUrl: book.imageUrl,
+      genre: book.genre,
+      isbn: book.isbn,
+      stock: book.stock,
+      price: book.price
+    }
+    const {data} = await axios.put(`/api/books/${book.id}`, bookObj)
+    dispatch(updatedBook(data))
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const booksReducer = (state = {currentBookId: null}, action) => {
   switch (action.type) {
     case GOT_BOOKS:
@@ -65,6 +90,8 @@ const booksReducer = (state = {currentBookId: null}, action) => {
     case FOUND_BOOK:
       let isbn = action.book.isbn
       return {...state, [isbn]: action.book, currentBookId: isbn}
+    case UPDATED_BOOK:
+      return {...state.book, book: action.book}
     default:
       return state
   }

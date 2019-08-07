@@ -36,8 +36,13 @@ const User = db.define('user', {
   admin: {
     type: Sequelize.BOOLEAN,
     defaultValue: false,
-    allowNull: false
+    allowNull: false,
+    noUpdate: true
   }
+})
+
+User.beforeCreate(user => {
+  user.admin = false
 })
 
 module.exports = User
